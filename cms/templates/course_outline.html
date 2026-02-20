@@ -209,7 +209,7 @@ from django.urls import reverse
             <h3 class="sr">${_("Page Actions")}</h3>
             <ul>
                 <li class="nav-item">
-                    <a href="#" class="button button-new" data-category="chapter" data-parent="${context_course.location}" data-default-name="${_('Section')}" title="${_('Click to add a new section')}">
+                    <a href="#" role="button" class="button button-new" data-category="chapter" data-parent="${context_course.location}" data-default-name="${_('Section')}" title="${_('Click to add a new section')}">
                         <span class="icon fa fa-plus" aria-hidden="true"></span>${_('New Section')}
                     </a>
                 </li>
@@ -221,13 +221,13 @@ from django.urls import reverse
                     </li>
                 %endif
                 <li class="nav-item">
-                    <a href="#" class="button button-toggle button-toggle-expand-collapse collapse-all is-hidden">
+                    <a href="#" role="button" class="button button-toggle button-toggle-expand-collapse collapse-all is-hidden">
                         <span class="collapse-all"><span class="icon fa fa-arrow-up" aria-hidden="true"></span> <span class="label">${_("Collapse All Sections")}</span></span>
                         <span class="expand-all"><span class="icon fa fa-arrow-down" aria-hidden="true"></span> <span class="label">${_("Expand All Sections")}</span></span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="${lms_link}" rel="external" class="button view-button view-live-button"
+                    <a href="${lms_link}" rel="external" target="_blank" class="button view-button view-live-button"
                        title="${_('Click to open the courseware in the LMS in a new tab')}">${_("View Live")}</a>
                 </li>
             </ul>
@@ -289,7 +289,7 @@ from django.urls import reverse
                 <article class="outline outline-complex outline-course" data-locator="${course_locator}" data-course-key="${course_locator.course_key}" data-course-assets="${assets_url}">
                 </article>
             </div>
-            <div class="ui-loading">
+            <div class="ui-loading" role="status" aria-label="${_('Loading')}">
                 <p><span class="spin"><span class="icon fa fa-refresh" aria-hidden="true"></span></span> <span class="copy">${_("Loading")}</span></p>
             </div>
         </article>
