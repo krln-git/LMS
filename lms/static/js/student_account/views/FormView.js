@@ -230,14 +230,18 @@
             toggleHelp: function(event, $help) {
                 var $el = $(event.currentTarget);
                 var $i = $el.find('i');
+                var expanded;
 
                 if ($help.css('display') === 'block') {
                     $help.css('display', 'none');
                     $i.addClass('fa-caret-right').removeClass('fa-caret-down');
+                    expanded = false;
                 } else {
                     $help.css('display', 'block');
                     $i.addClass('fa-caret-down').removeClass('fa-caret-right');
+                    expanded = true;
                 }
+                $el.attr('aria-expanded', expanded ? 'true' : 'false');
             },
 
             saveError: function(error) {
