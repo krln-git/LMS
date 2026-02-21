@@ -364,6 +364,29 @@
                 );
                 expect(authComplete).toBe(false);
             });
+
+            it('toggles accessibility attributes on help links', function() {
+                createLoginView(this);
+                var $helpButton = $('.login-help');
+                var $helpRegion = $('#login-help');
+
+                // Initial state
+                expect($helpButton).toHaveAttr('aria-expanded', 'false');
+                expect($helpButton).toHaveAttr('aria-controls', 'login-help');
+                expect($helpRegion).toBeHidden();
+
+                // Click to expand
+                $helpButton.click();
+
+                expect($helpButton).toHaveAttr('aria-expanded', 'true');
+                expect($helpRegion).toBeVisible();
+
+                // Click to collapse
+                $helpButton.click();
+
+                expect($helpButton).toHaveAttr('aria-expanded', 'false');
+                expect($helpRegion).toBeHidden();
+            });
         });
     });
 }).call(this, define || RequireJS.define);
