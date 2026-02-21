@@ -31,12 +31,21 @@ class Command(BaseDeletionCommand):
 
 
 import logging
+import re
 import time
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
 log = logging.getLogger(__name__)
+
+
+def validate_identifier(identifier):
+    """
+    Validates that the identifier contains only alphanumeric characters and underscores.
+    """
+    if not re.match(r'^[a-zA-Z0-9_]+$', identifier):
+        raise ValueError(f"Invalid identifier: {identifier}")
 
 
 def delete_rows(model_mgr,
@@ -58,6 +67,9 @@ def delete_rows(model_mgr,
         raise CommandError(f'Only positive chunk size is allowed ({chunk_size}).')
     if sleep_between < 0:
         raise CommandError(f'Only non-negative sleep between seconds is allowed ({sleep_between}).')
+
+    validate_identifier(table_name)
+    validate_identifier(primary_id_name)
 
     # The "as id" below fools Django raw query into thinking the primary key is being queried.
     # It's necessary because Django will throw an exception if the raw SQL does not query the primary key.
