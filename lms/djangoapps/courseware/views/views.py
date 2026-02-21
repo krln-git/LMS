@@ -1796,6 +1796,17 @@ class XBlockContentInspector:
         XBlock is capable of modifying the DOM afterwards to inject math content
         into the page, this will not catch it.
         """
+        content = self.fragment.body_html()
+
+        # Optimization: Check for presence of potential MathJax markers first
+        # to avoid iterating through the list and doing multiple string searches.
+        # MathJax delimiters start with either '\' or '['.
+        has_backslash = '\\' in content
+        has_bracket = '[' in content
+
+        if not has_backslash and not has_bracket:
+            return False
+
         # The following pairs are used to mark Mathjax syntax in XBlocks. There
         # are other options for the wiki, but we don't worry about those here.
         MATHJAX_TAG_PAIRS = [
@@ -1804,8 +1815,14 @@ class XBlockContentInspector:
             ("[mathjaxinline]", "[/mathjaxinline]"),
             ("[mathjax]", "[/mathjax]"),
         ]
-        content = self.fragment.body_html()
+
         for (start_tag, end_tag) in MATHJAX_TAG_PAIRS:
+            # Optimization: Pre-check if start_tag is possible
+            if start_tag.startswith('\\') and not has_backslash:
+                continue
+            if start_tag.startswith('[') and not has_bracket:
+                continue
+
             if start_tag in content and end_tag in content:
                 return True
 
