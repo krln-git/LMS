@@ -1,5 +1,6 @@
 /* global gettext */
 import React from 'react';
+import PropTypes from 'prop-types';
 import FocusLock, { AutoFocusInside } from 'react-focus-lock';
 import StringUtils from 'edx-ui-toolkit/js/utils/string-utils';
 
@@ -18,7 +19,6 @@ class EnterpriseLearnerPortalModal extends React.Component {
     }
 
     componentDidMount() {
-        // eslint-disable-next-line react/prop-types
         const storageKey = `enterprise_learner_portal_modal__${this.props.enterpriseCustomerUUID}`;
         const hasViewedModal = window.sessionStorage.getItem(storageKey);
         if (!hasViewedModal) {
@@ -61,7 +61,6 @@ class EnterpriseLearnerPortalModal extends React.Component {
         const { key } = e;
         if (key === 'Escape') {
             window.analytics.track('edx.ui.enterprise.lms.dashboard.learner_portal_modal.closed', {
-                // eslint-disable-next-line react/prop-types
                 enterpriseUUID: this.props.enterpriseCustomerUUID,
                 source: 'Escape',
             });
@@ -78,7 +77,6 @@ class EnterpriseLearnerPortalModal extends React.Component {
 
     openModal() {
         window.analytics.track('edx.ui.enterprise.lms.dashboard.learner_portal_modal.opened', {
-            // eslint-disable-next-line react/prop-types
             enterpriseUUID: this.props.enterpriseCustomerUUID,
         });
         this.setState({
@@ -87,7 +85,6 @@ class EnterpriseLearnerPortalModal extends React.Component {
     }
 
     getLearnerPortalUrl() {
-        // eslint-disable-next-line react/prop-types
         const baseUrlWithSlug = `${this.props.enterpriseLearnerPortalBaseUrl}/${this.props.enterpriseCustomerSlug}`;
         return `${baseUrlWithSlug}?utm_source=lms_dashboard_modal`;
     }
@@ -95,7 +92,6 @@ class EnterpriseLearnerPortalModal extends React.Component {
     handleLearnerPortalDashboardClick(e) {
         e.preventDefault();
         window.analytics.track('edx.ui.enterprise.lms.dashboard.learner_portal_modal.dashboard_cta.clicked', {
-            // eslint-disable-next-line react/prop-types
             enterpriseUUID: this.props.enterpriseCustomerUUID,
         });
         setTimeout(() => {
@@ -108,9 +104,15 @@ class EnterpriseLearnerPortalModal extends React.Component {
             return null;
         }
 
+        const titleId = `enterprise-modal-title-${this.props.enterpriseCustomerUUID}`;
+        const descriptionId = `enterprise-modal-desc-${this.props.enterpriseCustomerUUID}`;
+
         return (
             <div
                 role="dialog"
+                aria-modal="true"
+                aria-labelledby={titleId}
+                aria-describedby={descriptionId}
                 className="modal-wrapper d-flex align-items-center justify-content-center"
             >
                 <FocusLock>
@@ -118,20 +120,18 @@ class EnterpriseLearnerPortalModal extends React.Component {
                         className="modal-content p-4 bg-white"
                         ref={(node) => { this.modalRef = node; }}
                     >
-                        <div className="mb-3 font-weight-bold">
+                        <div id={titleId} className="mb-3 font-weight-bold">
                             {StringUtils.interpolate(
                                 gettext('You have access to the {enterpriseName} dashboard'),
                                 {
-                                    // eslint-disable-next-line react/prop-types
                                     enterpriseName: this.props.enterpriseCustomerName,
                                 },
                             )}
                         </div>
-                        <p>
+                        <p id={descriptionId}>
                             {StringUtils.interpolate(
                                 gettext('To access the courses available to you through {enterpriseName}, visit the {enterpriseName} dashboard.'),
                                 {
-                                    // eslint-disable-next-line react/prop-types
                                     enterpriseName: this.props.enterpriseCustomerName,
                                 },
                             )}
@@ -142,7 +142,6 @@ class EnterpriseLearnerPortalModal extends React.Component {
                                 className="btn-link mr-3"
                                 onClick={() => {
                                     window.analytics.track('edx.ui.enterprise.lms.dashboard.learner_portal_modal.closed', {
-                                        // eslint-disable-next-line react/prop-types
                                         enterpriseUUID: this.props.enterpriseCustomerUUID,
                                         source: 'Cancel button',
                                     });
@@ -167,6 +166,13 @@ class EnterpriseLearnerPortalModal extends React.Component {
         );
     }
 }
+
+EnterpriseLearnerPortalModal.propTypes = {
+    enterpriseCustomerUUID: PropTypes.string.isRequired,
+    enterpriseCustomerName: PropTypes.string.isRequired,
+    enterpriseLearnerPortalBaseUrl: PropTypes.string.isRequired,
+    enterpriseCustomerSlug: PropTypes.string.isRequired,
+};
 
 // eslint-disable-next-line import/prefer-default-export
 export { EnterpriseLearnerPortalModal };
