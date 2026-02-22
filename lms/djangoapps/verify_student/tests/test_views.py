@@ -1528,14 +1528,12 @@ class TestPhotoVerificationResultsCallback(ModuleStoreTestCase, TestVerification
         )
         self.assertContains(response, 'JSON should be dict', status_code=400)
 
-    @patch(
-        'lms.djangoapps.verify_student.ssencrypt.has_valid_signature',
-        mock.Mock(side_effect=mocked_has_valid_signature)
-    )
-    def test_invalid_access_key(self):
+    @patch('lms.djangoapps.verify_student.ssencrypt.has_valid_signature')
+    def test_invalid_access_key(self, mock_signature):
         """
         Test for invalid access key.
         """
+        mock_signature.return_value = False
         data = {
             "EdX-ID": self.receipt_id,
             "Result": "Testing",
@@ -1550,7 +1548,7 @@ class TestPhotoVerificationResultsCallback(ModuleStoreTestCase, TestVerification
             HTTP_AUTHORIZATION='test testing:testing',
             HTTP_DATE='testdate'
         )
-        self.assertContains(response, 'Access key invalid', status_code=400)
+        self.assertContains(response, 'Signature is invalid', status_code=400)
 
     @patch(
         'lms.djangoapps.verify_student.ssencrypt.has_valid_signature',
@@ -1576,13 +1574,11 @@ class TestPhotoVerificationResultsCallback(ModuleStoreTestCase, TestVerification
         )
         self.assertContains(response, 'edX ID Invalid-Id not found', status_code=400)
 
-    @patch(
-        'lms.djangoapps.verify_student.ssencrypt.has_valid_signature',
-        mock.Mock(side_effect=mocked_has_valid_signature)
-    )
+    @patch('lms.djangoapps.verify_student.ssencrypt.has_valid_signature')
     @patch('lms.djangoapps.verify_student.views.log.error')
     @patch('lms.djangoapps.verify_student.views.segment.track')
-    def test_passed_status_template(self, mock_segment_track, _mock_log_error):
+    def test_passed_status_template(self, mock_segment_track, _mock_log_error, mock_signature):
+        mock_signature.return_value = True
         """
         Test for verification passed.
         """
@@ -1615,6 +1611,11 @@ class TestPhotoVerificationResultsCallback(ModuleStoreTestCase, TestVerification
         assert old_verification.expiry_email_date is None
         assert response.content.decode('utf-8') == 'OK!'
         self._assert_verification_approved_email(expiration_datetime.date())
+
+        args, _ = mock_signature.call_args
+        headers = args[1]
+        assert 'Content-Type' in headers
+        assert headers['Content-Type'] == 'application/json'
 
     @patch.dict(settings.VERIFY_STUDENT, {'USE_DJANGO_MAIL': True})
     def test_approved_email_without_ace(self):

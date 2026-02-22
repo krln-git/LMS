@@ -1,0 +1,4 @@
+## 2025-02-18 - [Signature Verification Bypass]
+**Vulnerability:** The `results_callback` endpoint in `verify_student/views.py` explicitly bypassed cryptographic signature verification, relying only on a shared Access Key (which acts as a username, not a password). This allowed forgery of student identity verification results if the Access Key was known.
+**Learning:** The code contained a comment "until we can figure out why we disagree on sigs", indicating a failed integration that led to security controls being disabled rather than fixed. The root cause was likely missing headers (`Content-Type`, `Content-MD5`) in the signature calculation on the receiver side.
+**Prevention:** Never disable security controls to fix integration bugs. Use comprehensive logging to diagnose signature mismatches (log computed vs expected signature) instead of bypassing the check. Ensure all headers involved in canonicalization are correctly extracted from the request.
