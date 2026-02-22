@@ -48,6 +48,7 @@ from openedx.core.djangoapps.site_configuration import helpers as configuration_
 from openedx.core.lib.log_utils import audit_log
 
 from .services import IDVerificationService
+from .ssencrypt import has_valid_signature
 
 log = logging.getLogger(__name__)
 
@@ -1058,16 +1059,17 @@ def results_callback(request):  # lint-amnesty, pylint: disable=too-many-stateme
         "Date": request.META.get("HTTP_DATE", "")
     }
 
-    _response, access_key_and_sig = headers["Authorization"].split(" ")
-    access_key = access_key_and_sig.split(":")[0]
+    if request.META.get("CONTENT_TYPE"):
+        headers["Content-Type"] = request.META.get("CONTENT_TYPE")
 
-    # This is what we should be doing...
-    # if not sig_valid:
-    #    return HttpResponseBadRequest("Signature is invalid")
+    if request.META.get("HTTP_CONTENT_MD5"):
+        headers["Content-MD5"] = request.META.get("HTTP_CONTENT_MD5")
 
-    # This is what we're doing until we can figure out why we disagree on sigs
-    if access_key != settings.VERIFY_STUDENT["SOFTWARE_SECURE"]["API_ACCESS_KEY"]:
-        return HttpResponseBadRequest("Access key invalid")
+    access_key = settings.VERIFY_STUDENT["SOFTWARE_SECURE"]["API_ACCESS_KEY"]
+    secret_key = settings.VERIFY_STUDENT["SOFTWARE_SECURE"]["API_SECRET_KEY"]
+
+    if not has_valid_signature(request.method, headers, body_dict, access_key, secret_key):
+        return HttpResponseBadRequest("Signature is invalid")
 
     receipt_id = body_dict.get("EdX-ID")
     result = body_dict.get("Result")
