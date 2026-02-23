@@ -119,11 +119,22 @@ def save_child_position(seq_block, child_name):
     """
     child_name: url_name of the child
     """
-    for position, child in enumerate(seq_block.get_children(), start=1):
-        if child.location.block_id == child_name:
-            # Only save if position changed
-            if position != seq_block.position:
-                seq_block.position = position
+    # Optimization: Use seq_block.children (list of usage keys) instead of
+    # seq_block.get_children() (list of XBlock instances) to avoid unnecessary
+    # database/modulestore hits and object instantiation.
+    if hasattr(seq_block, 'children'):
+        for position, child_key in enumerate(seq_block.children, start=1):
+            if child_key.block_id == child_name:
+                if position != seq_block.position:
+                    seq_block.position = position
+                break
+    else:
+        for position, child in enumerate(seq_block.get_children(), start=1):
+            if child.location.block_id == child_name:
+                # Only save if position changed
+                if position != seq_block.position:
+                    seq_block.position = position
+                break
     # Save this new position to the underlying KeyValueStore
     seq_block.save()
 
