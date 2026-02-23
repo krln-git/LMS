@@ -99,15 +99,16 @@ def can_show_verified_upgrade(user, enrollment, course=None):
     if enrollment is None:
         return False  # this got accidentally flipped in 2017 (commit 8468357), but leaving alone to not switch again
 
-    if not is_mode_upsellable(user, enrollment, course):
-        return False
-
+    # Check upgrade_deadline first to avoid expensive is_mode_upsellable (PartitionService) check
     upgrade_deadline = enrollment.upgrade_deadline
 
     if upgrade_deadline is None:
         return False
 
     if datetime.datetime.now(utc).date() > upgrade_deadline.date():
+        return False
+
+    if not is_mode_upsellable(user, enrollment, course):
         return False
 
     # Show the summary if user enrollment is in which allow user to upsell
