@@ -332,8 +332,25 @@
              *
              */
             toggleDisableButton: function(disabled) {
-                if (this.$submitButton) {
-                    this.$submitButton.attr('disabled', disabled);
+                var $button = this.$submitButton;
+                if ($button) {
+                    $button.attr('disabled', disabled);
+                    if (disabled) {
+                        if (!$button.data('original-content')) {
+                            $button.data('original-content', $button.html());
+                        }
+                        if ($button.find('.fa-spinner').length === 0) {
+                            $button.prepend('<span class="fa fa-spinner fa-spin" aria-hidden="true"></span> ');
+                        }
+                    } else {
+                        var originalContent = $button.data('original-content');
+                        if (originalContent) {
+                            $button.html(originalContent);
+                            $button.removeData('original-content');
+                        } else {
+                            $button.find('.fa-spinner').remove();
+                        }
+                    }
                 }
             },
 
