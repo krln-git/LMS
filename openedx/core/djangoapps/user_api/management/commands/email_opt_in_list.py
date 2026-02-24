@@ -197,6 +197,10 @@ class Command(BaseCommand):
         writer.writeheader()
 
         cursor = self._db_cursor()
+
+        org_placeholders = ",".join(["%s"] * len(org_aliases))
+        course_placeholders = ",".join(["%s"] * len(courses))
+
         query = (
             """
             SELECT
@@ -230,11 +234,12 @@ class Command(BaseCommand):
             WHERE enrollment.course_id IN ( {course_id_list} )
             """
         ).format(
-            course_id_list=self._sql_list(courses),
-            org_list=self._sql_list(org_aliases)
+            course_id_list=course_placeholders,
+            org_list=org_placeholders
         )
 
-        cursor.execute(query)
+        query_params = org_aliases + org_aliases + courses
+        cursor.execute(query, query_params)
         row_count = 0
         for row in self._iterate_results(cursor):
             user_id, username, email, full_name, course_id, is_opted_in, pref_set_datetime = row
@@ -279,12 +284,6 @@ class Command(BaseCommand):
             if not rows:
                 break
             yield from rows
-
-    def _sql_list(self, values):
-        """
-        Serialize a list of values for including in a SQL "IN" statement.
-        """
-        return ",".join([f'"{val}"' for val in values])
 
     def _db_cursor(self):
         """
