@@ -2298,15 +2298,25 @@ def get_financial_aid_courses(user, course_id=None):
     """ Retrieve the courses eligible for financial assistance. """
     use_new_flow = False
     financial_aid_courses = []
-    for enrollment in CourseEnrollment.enrollments_for_user(user).order_by('-created'):
+    # Bolt ⚡: Optimize query by prefetching related course and modes
+    enrollments = CourseEnrollment.enrollments_for_user(user)\
+        .select_related('course')\
+        .prefetch_related('course__modes')\
+        .order_by('-created')
+
+    for enrollment in enrollments:
+
+        # Bolt ⚡: Check for verified mode using prefetched modes instead of DB query
+        has_verified_mode = any(
+            mode.mode_slug == CourseMode.VERIFIED and
+            (mode.expiration_datetime is None or mode.expiration_datetime > datetime.now(UTC))
+            for mode in enrollment.course.modes.all()
+        )
 
         if enrollment.mode != CourseMode.VERIFIED and \
                 enrollment.course_overview and \
                 enrollment.course_overview.eligible_for_financial_aid and \
-                CourseMode.objects.filter(
-                    Q(_expiration_datetime__isnull=True) | Q(_expiration_datetime__gt=datetime.now(UTC)),
-                    course_id=enrollment.course_id,
-                    mode_slug=CourseMode.VERIFIED).exists():
+                has_verified_mode:
             # This is a workaround to set course_id before disabling the field in case of new financial assistance flow.
             if str(enrollment.course_overview) == course_id:
                 financial_aid_courses = [{
