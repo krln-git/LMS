@@ -5,11 +5,12 @@
         'jquery',
         'underscore',
         'backbone',
+        'gettext',
         'common/js/utils/edx.utils.validate',
         'edx-ui-toolkit/js/utils/html-utils',
         'edx-ui-toolkit/js/utils/string-utils',
         'text!templates/student_account/form_errors.underscore'
-    ], function($, _, Backbone, EdxUtilsValidate, HtmlUtils, StringUtils, formErrorsTpl) {
+    ], function($, _, Backbone, gettext, EdxUtilsValidate, HtmlUtils, StringUtils, formErrorsTpl) {
         return Backbone.View.extend({
             tagName: 'form',
             el: '',
@@ -332,8 +333,40 @@
              *
              */
             toggleDisableButton: function(disabled) {
+                var submittingText;
                 if (this.$submitButton) {
-                    this.$submitButton.attr('disabled', disabled);
+                    this.$submitButton.prop('disabled', disabled);
+
+                    if (disabled) {
+                        this.$submitButton.addClass('is-loading');
+                        // Save the original html content of the button
+                        if (!this.$submitButton.data('original-content')) {
+                            this.$submitButton.data('original-content', this.$submitButton.html());
+                        }
+
+                        if (this.formType === 'login') {
+                            submittingText = gettext('Signing in...');
+                        } else if (this.formType === 'register') {
+                            submittingText = gettext('Creating account...');
+                        } else if (this.formType === 'password-reset') {
+                            submittingText = gettext('Sending email...');
+                        } else {
+                            submittingText = gettext('Processing...');
+                        }
+
+                        HtmlUtils.setHtml(
+                            this.$submitButton,
+                            HtmlUtils.HTML(
+                                '<span class="icon fa fa-spinner fa-spin" aria-hidden="true"></span> ' + _.escape(submittingText)
+                            )
+                        );
+                    } else {
+                        this.$submitButton.removeClass('is-loading');
+                        // Restore original content
+                        if (this.$submitButton.data('original-content')) {
+                            this.$submitButton.html(this.$submitButton.data('original-content'));
+                        }
+                    }
                 }
             },
 
