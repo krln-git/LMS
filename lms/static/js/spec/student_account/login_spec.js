@@ -157,6 +157,46 @@
                 expect(authComplete).toBe(true);
             });
 
+            it('changes the submit button text to "Signing in..." when form is submitted', function() {
+                createLoginView(this);
+
+                // Submit the form, with successful validation
+                submitForm(true);
+
+                // Form button should be disabled on success.
+                expect(view.$submitButton).toHaveAttr('disabled');
+
+                // Form button text should be "Signing in..."
+                expect(view.$submitButton.text().trim()).toBe('Signing in...');
+
+                // Form button should have spinner
+                expect(view.$submitButton.find('.fa-spinner')).toBeVisible();
+
+                // Respond with status code 200
+                AjaxHelpers.respondWithJson(requests, {});
+            });
+
+            it('reverts the submit button text when submission fails', function() {
+                var originalText;
+                createLoginView(this);
+                originalText = view.$submitButton.text();
+
+                // Submit the form, with successful validation
+                submitForm(true);
+
+                expect(view.$submitButton.text().trim()).toBe('Signing in...');
+
+                // Simulate an error
+                AjaxHelpers.respondWithError(requests);
+
+                // Form button should be re-enabled
+                expect(view.$submitButton).not.toHaveAttr('disabled');
+
+                // Form button text should be original
+                expect(view.$submitButton.text()).toBe(originalText);
+                expect(view.$submitButton.find('.fa-spinner')).not.toExist();
+            });
+
             it('sends analytics info containing the enrolled course ID', function() {
                 var expectedData;
 
