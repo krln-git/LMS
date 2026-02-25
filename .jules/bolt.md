@@ -1,0 +1,3 @@
+## 2024-05-22 - Optimized Financial Aid Courses Query
+**Learning:** `CourseEnrollment.enrollments_for_user(user)` does not select_related `course`, causing N+1 queries when accessing `enrollment.course_overview`. `CourseEnrollment.enrollments_for_user_with_overviews_preload(user)` should be used instead. Also, repeated filtering on `CourseMode` inside a loop causes N+1 queries; bulk fetching is required.
+**Action:** Always check `CourseEnrollment` access patterns for N+1 issues and use bulk fetching for related `CourseMode` checks. Ensure safe type comparison between `CourseKey` and database values by casting to string.
