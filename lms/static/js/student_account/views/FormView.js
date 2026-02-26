@@ -5,11 +5,12 @@
         'jquery',
         'underscore',
         'backbone',
+        'gettext',
         'common/js/utils/edx.utils.validate',
         'edx-ui-toolkit/js/utils/html-utils',
         'edx-ui-toolkit/js/utils/string-utils',
         'text!templates/student_account/form_errors.underscore'
-    ], function($, _, Backbone, EdxUtilsValidate, HtmlUtils, StringUtils, formErrorsTpl) {
+    ], function($, _, Backbone, gettext, EdxUtilsValidate, HtmlUtils, StringUtils, formErrorsTpl) {
         return Backbone.View.extend({
             tagName: 'form',
             el: '',
@@ -332,8 +333,28 @@
              *
              */
             toggleDisableButton: function(disabled) {
-                if (this.$submitButton) {
-                    this.$submitButton.attr('disabled', disabled);
+                var $button = this.$submitButton;
+                if ($button) {
+                    if (disabled) {
+                        // Save original content if not already saved
+                        if (!$button.data('original-content')) {
+                            $button.data('original-content', $button.html());
+                        }
+                        // Set loading state
+                        var loadingText = gettext('Processing...');
+                        var loadingHtml = '<span class="icon fa fa-spinner fa-spin" aria-hidden="true"></span> ' + loadingText;
+                        HtmlUtils.setHtml($button, HtmlUtils.HTML(loadingHtml));
+                        $button.prop('disabled', true);
+                        $button.addClass('is-loading');
+                    } else {
+                        // Restore original content
+                        var originalContent = $button.data('original-content');
+                        if (originalContent) {
+                            HtmlUtils.setHtml($button, HtmlUtils.HTML(originalContent));
+                        }
+                        $button.prop('disabled', false);
+                        $button.removeClass('is-loading');
+                    }
                 }
             },
 
