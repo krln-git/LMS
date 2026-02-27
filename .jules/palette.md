@@ -1,0 +1,3 @@
+## 2024-05-24 - Accessibility improvements for transcript feedback buttons
+**Learning:** Found that `thumbs-up-btn` and `thumbs-down-btn` in `lms/templates/video.html` were icon-only and missing `aria-label`s, which hindered accessibility for screen readers. Adding `title` along with `aria-label` provides a native tooltip for sighted users, which improves UX without creating custom UI elements.
+**Action:** Always check icon-only buttons for both `aria-label` (for screen readers) and `title` (for mouse users) to ensure a complete accessibility and UX enhancement.
