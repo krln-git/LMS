@@ -77,14 +77,14 @@
 
           {% if messages %}
             {% comment %}
-              The message is not actually safe, but StatusAlertRenderer uses react which adds escaping,
-              so marking as safe keeps the message from being double-escaped.
+              The message must use `escapejs` to safely pass Django template variables
+              into a JavaScript string literal, avoiding XSS vulnerabilities.
             {% endcomment %}
             {% for message in messages %}
               <div id="alert_stat_bar"></div>
               <script type="text/javascript">
                 new StatusAlertRenderer(
-                  "{{ message|safe }}",
+                  "{{ message|escapejs }}",
                   "#alert_stat_bar",
                   ".nav nav-tabs"
                 );
