@@ -1,0 +1,3 @@
+## 2024-05-24 - N+1 query problem when setting multiple blocks' state
+**Learning:** `DjangoXBlockUserStateClient.set_many` iterates over all block keys and originally used `StudentModule.objects.get_or_create` inside the loop. This causes an N+1 query issue, which significantly degrades performance during batch state updates for multiple blocks (e.g., when a user finishes a section with multiple problems).
+**Action:** Use `self._get_student_modules()` to pre-fetch existing `StudentModule` instances into a dictionary outside the loop. Then, iterate over the keys, checking the pre-fetched dictionary before falling back to `get_or_create`. This reduces the number of database queries drastically, making batch operations much faster.
