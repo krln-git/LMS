@@ -1,0 +1,3 @@
+## 2025-03-03 - Reorder Conditions to Avoid Expensive Modulestore Calls
+**Learning:** `PartitionService` initialization in `is_mode_upsellable` (inside `lms/djangoapps/courseware/utils.py`) is surprisingly expensive because it triggers Modulestore accesses. If this check happens before lightweight attribute checks (`enrollment.is_active`, `enrollment.mode`), it slows down processing unnecessarily for ineligible users.
+**Action:** When working in hot paths, ensure that cheap, local property checks (like those on cached/pre-fetched `CourseEnrollment` properties) are executed before hitting Modulestore-dependent functions like `is_mode_upsellable`.
