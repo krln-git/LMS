@@ -1,0 +1,4 @@
+## 2024-03-03 - [HIGH] DOM-based XSS in template literals
+**Vulnerability:** Untrusted text/messages (e.g., API response `detail`) were interpolated directly into template literal strings and assigned to an element's `.innerHTML` (DOM-based XSS).
+**Learning:** This vulnerability existed because developers often assume template literals act like frontend framework templating (which auto-escape by default), but plain JS template strings do not escape HTML, leading to XSS when inserted into `.innerHTML`.
+**Prevention:** When constructing HTML dynamically in vanilla JavaScript, prevent DOM-based XSS by using `.textContent` to inject untrusted data (like API responses) rather than interpolating variables directly into `.innerHTML` template literals. Leave the span empty in the `.innerHTML` literal, then select it and set `.textContent`.
