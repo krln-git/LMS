@@ -50,6 +50,7 @@ from openedx.core.djangolib.js_utils import js_escaped_string
                     <h3 class="sr-only">${_("Print or share your certificate:")}</h3>
                     % if facebook_share_enabled:
                       <button class="action action-share-facebook btn-inverse btn-small icon-only" id="action-share-facebook"
+                        title="${_('Post on Facebook')}"
                         ## xss-lint: disable=mako-invalid-html-filter
                         onclick="FaceBook.share({share_link: '${share_url | n, js_escaped_string}'});">
                           <span class="icon fa fa-facebook-official" aria-hidden="true"></span>
