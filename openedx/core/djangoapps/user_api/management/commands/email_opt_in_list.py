@@ -234,7 +234,11 @@ class Command(BaseCommand):
             org_list=self._sql_list(org_aliases)
         )
 
-        cursor.execute(query)
+        # The parameters list consists of org_aliases twice (for two subqueries)
+        # and courses once (for the outer query)
+        params = tuple(org_aliases) + tuple(org_aliases) + tuple(courses)
+
+        cursor.execute(query, params)
         row_count = 0
         for row in self._iterate_results(cursor):
             user_id, username, email, full_name, course_id, is_opted_in, pref_set_datetime = row
@@ -284,7 +288,7 @@ class Command(BaseCommand):
         """
         Serialize a list of values for including in a SQL "IN" statement.
         """
-        return ",".join([f'"{val}"' for val in values])
+        return ",".join(["%s"] * len(values))
 
     def _db_cursor(self):
         """
