@@ -1,0 +1,4 @@
+
+## 2025-02-13 - Form Help Toggle ARIA States
+**Learning:** In Open edX templates, dynamically expanding help sections triggered by buttons (like "Need help signing in?" in `form_field.underscore` and handled by `FormView.js`) were missing ARIA state management. Without `aria-expanded` and `aria-controls`, screen readers are completely unaware that clicking the button reveals new content below it. Furthermore, FontAwesome icons used decoratively (`<i class="fa fa-caret-right" />`) often fail HTML validation (self-closing `<i>`) and can be read aloud inconsistently if not hidden from screen readers.
+**Action:** Always add `aria-expanded="false"` and `aria-controls="[target-id]"` to the trigger button initially. Use JavaScript (e.g., in the Backbone view's `toggleHelp` method) to toggle `aria-expanded` between `'true'` and `'false'` as the `display` state of the target changes. Explicitly close FontAwesome tags and add `aria-hidden="true"` to them.
