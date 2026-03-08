@@ -114,20 +114,20 @@ class Command(BaseCommand):
             # Build the SQL query.
             query = 'INSERT INTO user_api_userorgtag (`user_id`, `org`, `key`, `value`, `created`, `modified`) VALUES '
             query_values = []
+            query_params = []
             for idx in range(start_idx, end_idx + 1):
-                query_values.append('({},"{}","email-optin","False",NOW(),NOW())'.format(
-                    optout_rows[idx][0], optout_rows[idx][1])
-                )
+                query_values.append('(%s,%s,"email-optin","False",NOW(),NOW())')
+                query_params.extend([optout_rows[idx][0], optout_rows[idx][1]])
             query += ','.join(query_values)
             query += ' ON DUPLICATE KEY UPDATE value="False", modified=NOW();'
 
             # Execute the SQL query.
             if dry_run:
-                log.info(query)
+                log.info(query, *query_params)
             else:
                 try:
                     cursor.execute('START TRANSACTION;')
-                    cursor.execute(query)
+                    cursor.execute(query, query_params)
                 except DatabaseError as err:
                     cursor.execute('ROLLBACK;')
                     log.error("Rolled-back opt-out for rows (%s, %s) through (%s, %s): %s",

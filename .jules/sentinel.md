@@ -1,0 +1,4 @@
+## 2026-03-08 - SQL Injection in bulk_user_org_email_optout management command
+**Vulnerability:** The `bulk_user_org_email_optout` Django management command manually concatenates user inputs (from a CSV file) directly into a raw SQL `INSERT ... ON DUPLICATE KEY UPDATE` statement. This allows SQL injection if the CSV contains malicious data in the `org` field.
+**Learning:** Even internal management commands and tools that run as one-offs need protection against SQL injection. Batch processing tools often construct large queries by concatenating values, which is an anti-pattern.
+**Prevention:** Always use parameterized queries or Django's built-in `bulk_create`/`bulk_update` features. If manual raw SQL is required for bulk insertions, use a single parameterized query with dynamically generated placeholders and pass a flattened list of all parameters to `cursor.execute(query, params)`.

@@ -49,6 +49,8 @@ def test_successful_dry_run(mock_logger):
             'Attempting opt-out for rows (%s, %s) through (%s, %s)...', '1', 'UniversityX', '3', 'StateUX'
         )
         mock_logger.assert_any_call(
-            'INSERT INTO user_api_userorgtag (`user_id`, `org`, `key`, `value`, `created`, `modified`) \
-VALUES (1,"UniversityX","email-optin","False",NOW(),NOW()),(2,"CollegeX","email-optin","False",NOW(),NOW()),\
-(3,"StateUX","email-optin","False",NOW(),NOW()) ON DUPLICATE KEY UPDATE value="False", modified=NOW();')
+            'INSERT INTO user_api_userorgtag (`user_id`, `org`, `key`, `value`, `created`, `modified`) '
+            'VALUES (%s,%s,"email-optin","False",NOW(),NOW()),(%s,%s,"email-optin","False",NOW(),NOW()),'
+            '(%s,%s,"email-optin","False",NOW(),NOW()) ON DUPLICATE KEY UPDATE value="False", modified=NOW();',
+            '1', 'UniversityX', '2', 'CollegeX', '3', 'StateUX'
+        )
