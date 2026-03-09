@@ -4,7 +4,7 @@
 <div class="discussion-module" data-discussion-id="${discussion_id}">
     <p>
         <span class="discussion-preview">
-            <span class="icon fa fa-comment"/>
+            <span class="icon fa fa-comment" aria-hidden="true"></span>
             ${_("To view live discussions, click Preview or View Live in Unit Settings.")}<br />
             ${_("Discussion ID: {discussion_id}").format(discussion_id=discussion_id)}
             % if not is_visible:
