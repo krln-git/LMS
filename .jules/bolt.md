@@ -1,0 +1,3 @@
+## 2024-05-24 - Pre-fetching to prevent N+1 Queries
+**Learning:** In Django batch operations like `DjangoXBlockUserStateClient.set_many`, looping over keys and calling `get_or_create` triggers N+1 database queries, significantly impacting performance. However, there is already an efficient method to resolve this specific to Open edX's architecture.
+**Action:** Always pre-fetch existing elements using available bulk methods like `_get_student_modules` (which yields `(student_module, usage_key)` tuples) and map them inside a dictionary to check their existence in the loop. This converts N+1 database queries to an initial chunked query + updates, reducing database stress drastically.
