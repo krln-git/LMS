@@ -92,7 +92,7 @@
                       <div class="row w-100">
                         <div class="col d-flex align-items-center">
                           <span class="icon icon-alert fa fa-warning me-2" aria-hidden="true"></span>
-                          <span class="message-content" style="min-width: 0; overflow-wrap: anywhere;">${textContent}</span>
+                          <span class="message-content" style="min-width: 0; overflow-wrap: anywhere;"></span>
                         </div>
                          <div class="nav-actions mt-3 flex-row-reverse d-none">
                           <button type="button" class="action-primary" id="enrollment-redirect-btn">${buttonText}</button>
@@ -101,6 +101,8 @@
                     </div>
                   </div>
                 `;
+                messageDiv.querySelector('.message-content').textContent = textContent;
+
                 const actionContainer = messageDiv.querySelector('.nav-actions');
                 actionContainer.classList.replace('d-none', 'd-flex');
                 actionContainer.querySelector('button').addEventListener('click', () => this.redirect(DASHBOARD_URL) )
