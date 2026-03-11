@@ -1,0 +1,3 @@
+## 2024-03-11 - Add aria-labels to icon-only buttons in LMS Video Template
+**Learning:** Found that the video transcript feedback feature (thumbs up/down) used icon-only buttons without any associated `aria-label`, `title`, or screen reader text, which makes it opaque for users navigating via screen readers. Additionally, the internal `fa` icon elements were missing `aria-hidden="true"`, causing screen readers to potentially announce them redundantly or incorrectly.
+**Action:** When working on Open edX Mako templates, always add explicit `title` and `aria-label` tags using translation functions (`${_('Text')}`) to icon-only interactive elements and ensure all decorative inner icons have `aria-hidden="true"`.
