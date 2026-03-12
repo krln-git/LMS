@@ -1,0 +1,3 @@
+## 2024-03-12 - [Fix N+1 query in user_state_client set_many]
+**Learning:** In DjangoXBlockUserStateClient batch operations like `set_many`, calling `get_or_create` inside a loop leads to severe N+1 database queries. The class has a private helper `_get_student_modules` that handles `UsageKey` extraction and query chunking correctly.
+**Action:** When updating or checking multiple states at once, pre-fetch existing `StudentModule` records using `self._get_student_modules` (passing a flat list of keys like `list(block_keys_to_state.keys())`) to significantly reduce query count while perfectly preserving individual row creation fallbacks.
