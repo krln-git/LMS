@@ -430,17 +430,27 @@ class DjangoXBlockUserStateClient(XBlockUserStateClient):
 
         evt_time = time()
 
+        # PRE-FETCH: Avoid N+1 queries by fetching existing StudentModules upfront
+        existing_modules = {}
+        if block_keys_to_state:
+            for student_module, usage_key in self._get_student_modules(username, list(block_keys_to_state.keys())):
+                existing_modules[usage_key] = student_module
+
         for usage_key, state in block_keys_to_state.items():
             try:
-                student_module, created = StudentModule.objects.get_or_create(
-                    student=user,
-                    course_id=usage_key.context_key,
-                    module_state_key=usage_key,
-                    defaults={
-                        'state': json.dumps(state),
-                        'module_type': usage_key.block_type,
-                    },
-                )
+                if usage_key in existing_modules:
+                    student_module = existing_modules[usage_key]
+                    created = False
+                else:
+                    student_module, created = StudentModule.objects.get_or_create(
+                        student=user,
+                        course_id=usage_key.context_key,
+                        module_state_key=usage_key,
+                        defaults={
+                            'state': json.dumps(state),
+                            'module_type': usage_key.block_type,
+                        },
+                    )
             except IntegrityError:
                 # PLAT-1109 - Until we switch to read committed, we cannot rely
                 # on get_or_create to be able to see rows created in another
