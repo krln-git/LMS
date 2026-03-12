@@ -1,0 +1,4 @@
+## 2025-03-12 - SQL Injection Vulnerability in userorgtag Bulk Operations
+**Vulnerability:** A bulk opt-out script for user orgs dynamically interpolated strings from user-controlled CSV files into a raw SQL `INSERT` statement (`bulk_user_org_email_optout.py`). This allowed for SQL injection (CWE-89) if an attacker crafted a malicious CSV.
+**Learning:** Even internal management commands and bulk operational scripts must use parameterized queries when executing raw SQL in Django. In this case, `cursor.execute(query)` was called without a parameters tuple, exposing the system.
+**Prevention:** Construct parameterized raw queries by appending `%s` placeholders to a `query_values` list, then passing a flattened list of parameters to `cursor.execute(query, params)`. Ensure dynamic input is never string-formatted directly into the SQL command.
