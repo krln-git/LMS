@@ -171,12 +171,14 @@ from openedx.core.djangolib.js_utils import (
             <div class="transcript-feedback-buttons">
                 <div class="transcript-feedback-btn-wrapper">
                     <button class="thumbs-up-btn">
-                        <span class="icon fa fa-thumbs-o-up thumbs-up-icon"></span>
+                        <span class="icon fa fa-thumbs-o-up thumbs-up-icon" aria-hidden="true"></span>
+                        <span class="sr">${_('Good transcript quality')}</span>
                     </button>
                 </div>
                 <div class="transcript-feedback-btn-wrapper">
                     <button class="thumbs-down-btn">
-                        <span class="icon fa fa-thumbs-o-down thumbs-down-icon"></span>
+                        <span class="icon fa fa-thumbs-o-down thumbs-down-icon" aria-hidden="true"></span>
+                        <span class="sr">${_('Poor transcript quality')}</span>
                     </button>
                 </div>
             </div>
