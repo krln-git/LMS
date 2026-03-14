@@ -1,0 +1,4 @@
+## 2025-01-20 - [DOM XSS Prevention in Vanilla JS]
+**Vulnerability:** DOM-based Cross-Site Scripting (XSS) via `innerHTML` template literal interpolation in `lms/static/js/student_account/enrollment.js`. Untrusted API error message data (`textContent`) was directly injected into HTML.
+**Learning:** Even internal API responses or error details can be manipulated or contain unsanitized input reflecting back from the server. Using template literals with `${variable}` inside `.innerHTML` bypasses standard HTML escaping.
+**Prevention:** When constructing HTML dynamically in vanilla JavaScript, inject untrusted data using `.textContent` or `.innerText` on specific child nodes rather than interpolating variables directly into `.innerHTML` template strings.
