@@ -1,0 +1,4 @@
+
+## 2024-03-15 - Dynamic aria-expanded states on Backbone.js/jQuery components
+**Learning:** In the Open edX LMS `student_account` component suite (Login, Register, Password Reset forms), interactive "help" toggles are implemented using basic jQuery DOM manipulation in Backbone.js views rather than a responsive state framework. Simply adding initial ARIA attributes to the Underscore.js template (`aria-expanded="false"` and `aria-controls`) is insufficient; the view's event handler (`toggleHelp` in `FormView.js`) must be manually updated to toggle the `aria-expanded` state, otherwise screen readers remain unaware of the element's changing state. Additionally, `<i>` tags for FontAwesome icons must be explicitly closed and have `aria-hidden="true"`.
+**Action:** Always locate and modify the corresponding jQuery event handlers when adding dynamic ARIA attributes to legacy interactive UI components.
