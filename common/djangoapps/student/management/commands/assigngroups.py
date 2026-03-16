@@ -62,7 +62,7 @@ class Command(BaseCommand):  # lint-amnesty, pylint: disable=missing-class-docst
 
         # Confirm groups don't already exist
         for group in dict(groups):
-            if UserTestGroup.objects.filter(name=group).count() != 0:
+            if UserTestGroup.objects.filter(name=group).exists():
                 print(group, "already exists!")
                 sys.exit(-1)
 
