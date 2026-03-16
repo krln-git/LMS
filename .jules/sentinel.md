@@ -1,0 +1,4 @@
+## 2024-05-24 - [DOM-based XSS in enrollment.js]
+**Vulnerability:** Found a DOM-based XSS in `lms/static/js/student_account/enrollment.js` where untrusted API response data was directly interpolated into a template literal used to set `.innerHTML`.
+**Learning:** This codebase uses template literals extensively to build DOM fragments. While convenient, it leads to XSS if variables containing user/API data are embedded directly in the `.innerHTML` assignment.
+**Prevention:** Construct the DOM fragment using `.innerHTML` with empty elements, and then select those elements to set untrusted data safely using `.textContent`.
