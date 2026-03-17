@@ -2298,7 +2298,13 @@ def get_financial_aid_courses(user, course_id=None):
     """ Retrieve the courses eligible for financial assistance. """
     use_new_flow = False
     financial_aid_courses = []
-    for enrollment in CourseEnrollment.enrollments_for_user(user).order_by('-created'):
+
+    # Preload enrollments to avoid N+1 queries on course_overview
+    enrollments = CourseEnrollment.enrollments_for_user_with_overviews_preload(user)
+    # Sort after preloading
+    enrollments = sorted(enrollments, key=lambda e: e.created, reverse=True)
+
+    for enrollment in enrollments:
 
         if enrollment.mode != CourseMode.VERIFIED and \
                 enrollment.course_overview and \

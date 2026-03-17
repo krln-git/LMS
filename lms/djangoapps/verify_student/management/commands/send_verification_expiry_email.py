@@ -236,9 +236,10 @@ class Command(BaseCommand):
         if days_since_expiry >= email_duration:
             send_expiry_email_again = False
 
-            enrollments = CourseEnrollment.enrollments_for_user(user=user)
+            # Preload course overviews to prevent N+1 queries when accessing enrollment.course_overview.has_ended()
+            enrollments = CourseEnrollment.enrollments_for_user_with_overviews_preload(user)
             for enrollment in enrollments:
-                if CourseMode.VERIFIED == enrollment.mode and not enrollment.course.has_ended():
+                if CourseMode.VERIFIED == enrollment.mode and enrollment.course_overview and not enrollment.course_overview.has_ended():
                     send_expiry_email_again = True
                     break
 
