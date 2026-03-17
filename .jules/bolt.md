@@ -1,0 +1,5 @@
+## 2024-05-24 - Avoid N+1 and FieldError on CourseEnrollment
+
+**Learning:** In Open edX, the `CourseEnrollment` model uses a `CourseKeyField` (`course_id`) instead of a traditional Django `ForeignKey` for courses. The `.course` and `.course_overview` attributes are Python `@property` descriptors that dynamically fetch data from the Modulestore (MongoDB) or `CourseOverview` table. Attempting to optimize queries with `.select_related('course')` will crash the application with a `FieldError`. Additionally, accessing `enrollment.course` is a heavy operation that fetches the full `CourseDescriptor` from the Modulestore.
+
+**Action:** To optimize iterations over a user's enrollments, use `CourseEnrollment.enrollments_for_user_with_overviews_preload(user)` to preload the SQL-backed `CourseOverview` records. Then, within the loop, access `enrollment.course_overview` (e.g., `enrollment.course_overview.has_ended()`) instead of the heavy `enrollment.course` to realize the performance benefits and eliminate N+1 queries.
