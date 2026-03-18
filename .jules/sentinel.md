@@ -1,0 +1,4 @@
+## 2024-05-20 - Command Injection Prevention in Management Commands
+**Vulnerability:** Found `os.system` being called with formatted strings containing unvalidated user input (`course_dir` and `export_dir`) in `clean_xml.py` management command.
+**Learning:** Python's `os.system` executes the command string in a subshell, making it vulnerable to shell injection if variables contain shell metacharacters like `;`, `&`, or `|`. Even in management commands, untrusted input (like directory paths from arguments) can lead to arbitrary code execution if passed this way.
+**Prevention:** Avoid `os.system` and prefer `subprocess.call` or `subprocess.run`. Crucially, pass arguments as a list (e.g., `['diff', '-r', course_dir, export_dir]`) rather than a single string, which avoids invoking a subshell and prevents metacharacter interpretation.
