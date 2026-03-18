@@ -1,0 +1,3 @@
+## 2024-03-24 - N+1 Optimization in set_many
+**Learning:** `DjangoXBlockUserStateClient.set_many` iterates through all XBlocks provided to it and individually calls `get_or_create` on each, resulting in an N+1 query situation, particularly evident for bulk operations.
+**Action:** When working with multiple entity creations or updates, always consider pre-fetching with a method like `_get_student_modules()` where applicable instead of letting it issue a query per iteration. Make sure to provide list of keys `list(dict.keys())` since iterators like `dict_keys` are not valid arguments for pre-fetching functions requiring subscriptable sequences or lists in many contexts.
