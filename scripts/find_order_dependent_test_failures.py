@@ -20,6 +20,7 @@ Sample usage::
 import os
 import re
 import shutil
+import subprocess
 import tempfile
 
 import click
@@ -92,11 +93,20 @@ def _load_test_file(test_file):
     return test_list
 
 
+def _get_pytest_command_args(output_file_name):
+    """
+    Return the pytest command arguments to run.
+    """
+    with open(output_file_name, 'r') as f:
+        tests = f.read().split()
+    return ["pytest", "-p", "no:randomly"] + tests
+
+
 def _get_pytest_command(output_file_name):
     """
-    Return the pytest command to run.
+    Return the pytest command to run (for display purposes).
     """
-    return f"pytest -p 'no:randomly' `cat {output_file_name}`"
+    return " ".join(_get_pytest_command_args(output_file_name))
 
 
 def _run_tests_and_check_for_failures(output_file_name):
@@ -104,8 +114,9 @@ def _run_tests_and_check_for_failures(output_file_name):
     Runs tests and returns True if failures are found.
     """
     global verbose_option
-    pytest_command = _get_pytest_command(output_file_name)
-    test_output = os.popen(pytest_command).read()
+    pytest_command = _get_pytest_command_args(output_file_name)
+    result = subprocess.run(pytest_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    test_output = result.stdout
     if verbose_option:
         print(test_output)
     failures_search = re.search(r'=== (\d+) failed', test_output)
