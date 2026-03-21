@@ -1,0 +1,3 @@
+## 2024-05-24 - Accessible Expandable Helps
+**Learning:** Expanding/collapsing help menus using jQuery.toggle-like behavior need dynamic `aria-expanded` attributes to indicate state to screen readers, and associative `aria-controls` on the button. Also, decorative FontAwesome icons in underscore templates shouldn't use `<i />` but must be explicitly closed `<i aria-hidden="true"></i>`.
+**Action:** When implementing toggling UI components, ensure that trigger buttons receive `aria-expanded` dynamically in the JavaScript handler and that all icons in HTML templates use proper tags and `aria-hidden="true"`.
