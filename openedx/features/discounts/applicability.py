@@ -122,6 +122,10 @@ def can_show_streak_discount_coupon(user, course):
     except CourseEnrollment.DoesNotExist:
         return False
 
+    # Bolt optimization: Fast attribute check before expensive modulestore check
+    if not enrollment.is_active:
+        return False
+
     if not is_mode_upsellable(user, enrollment):
         return False
 
