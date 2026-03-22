@@ -99,7 +99,9 @@ def can_show_verified_upgrade(user, enrollment, course=None):
     if enrollment is None:
         return False  # this got accidentally flipped in 2017 (commit 8468357), but leaving alone to not switch again
 
-    if not is_mode_upsellable(user, enrollment, course):
+    # Fast checks: ensure enrollment is active and in an upsellable mode
+    # before performing the expensive is_mode_upsellable partition check.
+    if not (enrollment.is_active and enrollment.mode in CourseMode.UPSELL_TO_VERIFIED_MODES):
         return False
 
     upgrade_deadline = enrollment.upgrade_deadline
@@ -110,8 +112,12 @@ def can_show_verified_upgrade(user, enrollment, course=None):
     if datetime.datetime.now(utc).date() > upgrade_deadline.date():
         return False
 
+    # Expensive check: uses PartitionService which accesses Modulestore
+    if not is_mode_upsellable(user, enrollment, course):
+        return False
+
     # Show the summary if user enrollment is in which allow user to upsell
-    return enrollment.is_active and enrollment.mode in CourseMode.UPSELL_TO_VERIFIED_MODES
+    return True
 
 
 def _request_financial_assistance(method, url, params=None, data=None):

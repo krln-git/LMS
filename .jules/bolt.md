@@ -1,0 +1,3 @@
+## 2024-05-18 - Avoid expensive is_mode_upsellable checks early in can_show_verified_upgrade
+**Learning:** `is_mode_upsellable` in `lms/djangoapps/courseware/utils.py` uses `PartitionService` which can access the Modulestore (expensive). Calling it at the top of `can_show_verified_upgrade` without checking cheaper local attributes first (like `enrollment.is_active` or `enrollment.mode` or `enrollment.upgrade_deadline`) leads to unnecessary performance bottlenecks for users that are not even eligible for upselling based on basic attributes.
+**Action:** Reorder checks in `can_show_verified_upgrade` to perform cheap local attribute checks (`is_active`, `mode`, `upgrade_deadline`) before calling the expensive `is_mode_upsellable` function.
