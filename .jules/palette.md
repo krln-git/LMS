@@ -1,0 +1,3 @@
+## 2024-05-24 - Accessible feedback buttons in Open edX
+**Learning:** In Open edX templates, screen reader text for icon-only buttons is frequently implemented using a visually hidden span with the `sr` class (e.g., `<span class="sr">${_('Thumbs up')}</span>`) combined with a `title` attribute on the `<button>` to aid sighted mouse users. The inner decorative icon `<span>` must be marked with `aria-hidden="true"` so that the screen reader won't get confused.
+**Action:** When adding accessible names to icon-only buttons, especially in older templates in this repo, use the `.sr` class for screen readers and `title` for visual users instead of solely relying on `aria-label`, and hide inner decorative spans with `aria-hidden="true"`.
