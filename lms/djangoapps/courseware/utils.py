@@ -99,7 +99,7 @@ def can_show_verified_upgrade(user, enrollment, course=None):
     if enrollment is None:
         return False  # this got accidentally flipped in 2017 (commit 8468357), but leaving alone to not switch again
 
-    if not is_mode_upsellable(user, enrollment, course):
+    if not enrollment.is_active:
         return False
 
     upgrade_deadline = enrollment.upgrade_deadline
@@ -108,6 +108,10 @@ def can_show_verified_upgrade(user, enrollment, course=None):
         return False
 
     if datetime.datetime.now(utc).date() > upgrade_deadline.date():
+        return False
+
+    # Bolt optimization: Perform the expensive Modulestore check last
+    if not is_mode_upsellable(user, enrollment, course):
         return False
 
     # Show the summary if user enrollment is in which allow user to upsell
