@@ -229,14 +229,16 @@
 
             toggleHelp: function(event, $help) {
                 var $el = $(event.currentTarget);
-                var $i = $el.find('i');
+                var $icon = $el.find('.icon.fa');
 
                 if ($help.css('display') === 'block') {
                     $help.css('display', 'none');
-                    $i.addClass('fa-caret-right').removeClass('fa-caret-down');
+                    $el.attr('aria-expanded', 'false');
+                    $icon.addClass('fa-caret-right').removeClass('fa-caret-down');
                 } else {
                     $help.css('display', 'block');
-                    $i.addClass('fa-caret-down').removeClass('fa-caret-right');
+                    $el.attr('aria-expanded', 'true');
+                    $icon.addClass('fa-caret-down').removeClass('fa-caret-right');
                 }
             },
 
