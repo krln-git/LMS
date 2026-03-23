@@ -1,0 +1,3 @@
+## 2024-06-18 - Ensure expandable sections use `aria-expanded` and properly scoped decorative icons
+**Learning:** Found that toggles using `display: none` for help sections (e.g. login/reset help) often missed `aria-expanded` attributes and relied on `<i class="fa fa-caret-right" />` self-closing tags, which are invalid HTML and incorrectly expose decorative elements to screen readers.
+**Action:** Always replace invalid `<i>` tag icons with `<span class="icon fa..." aria-hidden="true"></span>` and dynamically update the `aria-expanded` attribute on the corresponding trigger `<button>` using jQuery/Backbone when the section expands or collapses.
