@@ -1,0 +1,3 @@
+## 2024-05-30 - Add ARIA expanded attributes to help toggles
+**Learning:** Custom UI toggles (like "Need help signing in?") without native semantic equivalents require explicit `aria-expanded` and `aria-controls` attributes to communicate their state to screen readers. Relying only on visual display changes (like `display: none` to `block`) leaves screen reader users unaware of the newly revealed content or the button's actual function.
+**Action:** Always pair visual toggle states (like `display` toggling) with the corresponding `aria-expanded` updates on the controlling element, and link them using `aria-controls`. Ensure decorative icons inside these buttons are hidden with `aria-hidden="true"` and use valid HTML tags (e.g., `<i ...></i>` instead of self-closing).
