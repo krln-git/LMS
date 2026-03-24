@@ -233,9 +233,11 @@
 
                 if ($help.css('display') === 'block') {
                     $help.css('display', 'none');
+                    $el.attr('aria-expanded', 'false');
                     $i.addClass('fa-caret-right').removeClass('fa-caret-down');
                 } else {
                     $help.css('display', 'block');
+                    $el.attr('aria-expanded', 'true');
                     $i.addClass('fa-caret-down').removeClass('fa-caret-right');
                 }
             },
