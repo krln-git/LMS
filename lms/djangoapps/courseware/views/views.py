@@ -2298,15 +2298,39 @@ def get_financial_aid_courses(user, course_id=None):
     """ Retrieve the courses eligible for financial assistance. """
     use_new_flow = False
     financial_aid_courses = []
-    for enrollment in CourseEnrollment.enrollments_for_user(user).order_by('-created'):
+
+    # Preload overviews to avoid N+1 queries for enrollment.course_overview
+    enrollments = CourseEnrollment.enrollments_for_user_with_overviews_preload(user)
+
+    # Handle the returned type safely, based on memory stating it returns a Python list
+    if not isinstance(enrollments, list):
+        enrollments = list(enrollments.order_by('-created'))
+    else:
+        # Fallback in case it evaluates to a list
+        enrollments = sorted(
+            enrollments,
+            key=lambda e: e.created.timestamp() if e.created else 0,
+            reverse=True
+        )
+
+    # Pre-fetch verified course modes to avoid N+1 queries in the loop
+    course_ids = [enrollment.course_id for enrollment in enrollments]
+
+    verified_modes = set()
+    if course_ids:
+        verified_modes_qs = CourseMode.objects.filter(
+            Q(_expiration_datetime__isnull=True) | Q(_expiration_datetime__gt=datetime.now(UTC)),
+            course_id__in=course_ids,
+            mode_slug=CourseMode.VERIFIED
+        ).values_list('course_id', flat=True)
+        verified_modes = set(verified_modes_qs)
+
+    for enrollment in enrollments:
 
         if enrollment.mode != CourseMode.VERIFIED and \
                 enrollment.course_overview and \
                 enrollment.course_overview.eligible_for_financial_aid and \
-                CourseMode.objects.filter(
-                    Q(_expiration_datetime__isnull=True) | Q(_expiration_datetime__gt=datetime.now(UTC)),
-                    course_id=enrollment.course_id,
-                    mode_slug=CourseMode.VERIFIED).exists():
+                enrollment.course_id in verified_modes:
             # This is a workaround to set course_id before disabling the field in case of new financial assistance flow.
             if str(enrollment.course_overview) == course_id:
                 financial_aid_courses = [{
