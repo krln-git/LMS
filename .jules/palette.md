@@ -1,0 +1,3 @@
+## 2026-03-28 - Accessible UI Toggles for Help Sections
+**Learning:** Found custom expanding/collapsing sections (login/reset help) lacking `aria-expanded` and `aria-controls` attributes, rendering them inaccessible to screen readers. Additionally, decorative FontAwesome icons used self-closing `<i />` tags without `aria-hidden="true"`, causing inconsistent announcements.
+**Action:** When building custom UI toggles, always explicitly set and dynamically toggle `aria-expanded` via JavaScript, use `aria-controls` to link to target content, and ensure decorative icons are explicitly closed (`<i></i>`) with `aria-hidden="true"`.
