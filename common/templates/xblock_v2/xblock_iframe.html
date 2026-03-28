@@ -42,7 +42,7 @@
     define = define || RequireJS.define;
     baseUrl = "";
     (function (require, define) {
-        if ('{{ view_name | safe }}' === 'studio_view') {
+        if ('{{ view_name | escapejs }}' === 'studio_view') {
             // Call `require-config.js` of the CMS
             var script = document.createElement('script');
             script.type = 'text/javascript';
@@ -375,7 +375,7 @@
                 callback(blockJS);
             }
 
-            if ('{{ view_name | safe }}' === 'studio_view') {
+            if ('{{ view_name | escapejs }}' === 'studio_view') {
               // Used when rendering the `studio_view`, in order to avoid open a new tab on click cancel or save
               const selectors = [
                   '.save-button',
