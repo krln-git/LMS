@@ -1,0 +1,3 @@
+## 2024-06-25 - Convert interactive div buttons to accessible <button> tags
+**Learning:** Interactive elements like close or copy buttons are sometimes incorrectly implemented as styled `<div>` tags. Refactoring these into native `<button type="button">` elements ensures proper keyboard navigability and screen reader support. Additionally, decorative FontAwesome icons must use explicitly closed tags (e.g., `<span></span>`) and include `aria-hidden="true"`.
+**Action:** Always verify that interactive elements use proper semantic HTML `<button>` tags and that decorative icons inside them are explicitly closed and hidden from screen readers.
