@@ -1,0 +1,3 @@
+## 2023-10-25 - N+1 Query in DjangoXBlockUserStateClient.set_many
+**Learning:** Batch operations like `set_many` can trigger N+1 queries if they use `get_or_create` on each individual item without pre-fetching. In Django, pre-fetching the existing records via an `__in` query eliminates the `get` part of `get_or_create` for already existing items, providing a massive performance boost for large batches.
+**Action:** Always check if a loop calling `get_or_create` or `update_or_create` can be optimized by doing a bulk fetch beforehand, especially in methods named `*_many`. Ensure dictionary keys are cast to a list when using them as parameters for `IN` clauses to avoid errors.
