@@ -63,11 +63,14 @@
                 hideHandler: function(event) {
                     this.shareContainer.hide();
                     this.toggleBtn.show();
+                    this.toggleBtn.attr('aria-expanded', 'false');
+                    this.toggleBtn.focus();
                 },
 
                 showHandler: function(event) {
                     this.shareContainer.show();
                     this.toggleBtn.hide();
+                    this.toggleBtn.attr('aria-expanded', 'true');
                 },
 
                 copyHandler: function(event) {
