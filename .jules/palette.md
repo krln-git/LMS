@@ -1,0 +1,3 @@
+## 2024-05-24 - Refactor div buttons to native buttons
+**Learning:** In Open edX templates, interactive elements like close or copy buttons are sometimes incorrectly implemented as styled `<div>` tags (`<div class="btn-link">`). This breaks keyboard navigation. Furthermore, decorative icons like FontAwesome should use properly closed tags (e.g., `<span></span>` instead of `<span />`) with `aria-hidden="true"`. Screen reader text for icon-only buttons uses the `.sr` class instead of just `aria-label`.
+**Action:** Always refactor `div` buttons to `<button type="button">`, explicitly close icon tags, apply `aria-hidden="true"` to decorative icons, and provide a visually hidden span with the `.sr` class for screen reader text on icon-only buttons.
