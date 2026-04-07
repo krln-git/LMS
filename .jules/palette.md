@@ -1,0 +1,3 @@
+## 2024-04-07 - Make video share widget keyboard accessible
+**Learning:** Found interactive elements (close and copy buttons in the social sharing modal) implemented as <div> tags, which prevents keyboard navigation and screen reader access. Additionally, expanding/collapsing content required dynamic toggling of aria-expanded and programmatic focus management.
+**Action:** When creating or modifying custom UI toggles, replace div-based buttons with native <button type="button"> elements, explicitly set and toggle aria-expanded via JS, and ensure focus is returned to the original toggle button when closed.
