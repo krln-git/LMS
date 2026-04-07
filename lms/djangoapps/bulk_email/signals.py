@@ -26,8 +26,9 @@ def force_optout_all(sender, **kwargs):  # lint-amnesty, pylint: disable=unused-
     if not user:
         raise TypeError('Expected a User type, but received None.')
 
-    for enrollment in CourseEnrollment.objects.filter(user=user):
-        Optout.objects.get_or_create(user=user, course_id=enrollment.course.id)
+    # Use values_list to prevent N+1 queries when accessing un-prefetched .course
+    for course_id in CourseEnrollment.objects.filter(user=user).values_list('course_id', flat=True):
+        Optout.objects.get_or_create(user=user, course_id=course_id)
 
 
 @receiver(ACE_MESSAGE_SENT)
