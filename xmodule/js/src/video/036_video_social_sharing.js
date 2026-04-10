@@ -63,6 +63,7 @@
                 hideHandler: function(event) {
                     this.shareContainer.hide();
                     this.toggleBtn.show();
+                    this.toggleBtn.focus();
                 },
 
                 showHandler: function(event) {
