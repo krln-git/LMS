@@ -1,0 +1,3 @@
+## 2024-05-15 - Interactive Elements Accessibility in Video Player
+**Learning:** Interactive UI controls like "Close" or "Copy" buttons in older templates are often implemented as clickable `<div>` elements with `.btn-link` classes, lacking keyboard accessibility and screen reader support. Furthermore, custom UI toggles fail to return focus to the trigger button when dismissed.
+**Action:** Always refactor clickable `<div>` elements to native `<button type="button">` with `aria-label` or `aria-hidden` on icons, strip default button styling if necessary, and ensure focus is returned to the original toggle button when a popover or modal is closed.
