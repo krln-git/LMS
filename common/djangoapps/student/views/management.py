@@ -887,7 +887,7 @@ def confirm_email_change(request, key):
             'new_email': pec.new_email
         }
 
-        if len(User.objects.filter(email=pec.new_email)) != 0:
+        if User.objects.filter(email=pec.new_email).exists():  # Bolt: Optimized existence check using .exists() instead of len() != 0
             response = render_to_response("email_exists.html", {})
             transaction.set_rollback(True)
             return response
