@@ -213,6 +213,8 @@ def get_enrollments_for_courses_in_program(user, program):
         CourseKey.from_string(key)
         for key in course_run_keys_for_program(program)
     ]
+    # ⚡ Bolt optimization: added .select_related('course') to prefetch CourseOverview
+    # and avoid N+1 queries when evaluating enrollment.course in get_enrollment_overviews.
     return CourseEnrollment.objects.filter(
         user=user,
         course_id__in=course_keys,
@@ -221,7 +223,7 @@ def get_enrollments_for_courses_in_program(user, program):
             CourseMode.PAID_EXECUTIVE_EDUCATION, CourseMode.PAID_BOOTCAMP
         ],
         is_active=True,
-    )
+    ).select_related('course')
 
 
 def get_enrollment_overviews(user, program, enrollments, request):
@@ -237,7 +239,7 @@ def get_enrollment_overviews(user, program, enrollments, request):
     Returns list[dict]
     """
     overviews_by_course_key = {
-        enrollment.course.id: enrollment.course for enrollment in enrollments
+        enrollment.course_id: enrollment.course for enrollment in enrollments
     }
     course_keys = list(overviews_by_course_key.keys())
     certficates_by_course_key = get_certificates_for_user_by_course_keys(user, course_keys)
