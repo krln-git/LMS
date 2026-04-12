@@ -1,0 +1,3 @@
+## 2024-05-20 - Refactored interactive divs to buttons in video.html
+**Learning:** In Open edX templates, some interactive elements like close or copy buttons are incorrectly implemented as styled `<div>` tags (e.g., `<div class="btn-link">`). Additionally, decorative icons using FontAwesome sometimes use self-closing tags like `<span class="fa fa-close" />` which are invalid HTML and lack `aria-hidden="true"`.
+**Action:** Always refactor these into native `<button type="button">` elements with inline styles to reset browser defaults (`style="background: none; border: none; padding: 0;"`) if needed. Add `aria-label` to icon-only buttons, and use explicitly closed tags with `aria-hidden="true"` for icons.
