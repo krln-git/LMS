@@ -1,0 +1,3 @@
+## 2024-04-13 - Converting video social share generic tags to interactive buttons
+**Learning:** Interactive UI elements, like close and copy controls in the video share menu, were implemented using styled `div` tags with `.btn-link`. This bypassed native keyboard navigation and focus management, breaking a11y standards. When building custom toggles, it's essential to set/update `aria-expanded` and manage focus states programmatically.
+**Action:** Converted `div` elements to native `<button type="button">` with native inline resets (`background: none; border: none; padding: 0;`), applied `aria-hidden` to decorative icons, and explicitly managed focus (`focus()`) and `aria-expanded` attributes in the JS handlers.
