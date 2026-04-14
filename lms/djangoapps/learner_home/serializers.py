@@ -299,7 +299,8 @@ class CertificateSerializer(serializers.Serializer):
 
     def get_cert_info(self, enrollment):
         """Utility to grab certificate info for this enrollment or empty object"""
-        return self.context.get("cert_statuses", {}).get(enrollment.course.id, {})
+        # ⚡ Bolt Optimization: Use enrollment.course_id instead of enrollment.course.id to avoid expensive N+1 Modulestore lookup for CourseOverview.
+        return self.context.get("cert_statuses", {}).get(enrollment.course_id, {})
 
     def get_availableDate(self, enrollment):
         """Available date changes based off of Certificate display behavior"""
