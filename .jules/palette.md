@@ -1,0 +1,3 @@
+## 2024-05-13 - [Converting Interactive Divs to Native Buttons]
+**Learning:** Found interactive elements like close and copy buttons in `lms/templates/video.html` implemented as `<div>` elements styled with `.btn-link`. These are not accessible to screen readers or keyboard navigation. Also found icon-only buttons lacking `aria-label`s.
+**Action:** Always convert these `<div>` tags to native `<button type="button">` tags. Do not use custom inline css like `style="background: none"` to override styles, rely on the existing `.btn-link` utility class. Always add `aria-label` to icon-only buttons.
