@@ -832,7 +832,7 @@ class TestCreditSerializer(LearnerDashboardBaseTest):
         """Mock data following the shape of credit_statuses"""
 
         return {
-            "course_key": str(enrollment.course.id),
+            "course_key": str(enrollment.course_id),
             "eligible": True,
             "deadline": random_date(),
             "purchased": False,
@@ -878,10 +878,10 @@ class TestLearnerEnrollmentsSerializer(LearnerDashboardBaseTest):
     def create_test_context(cls, enrollment):
         """Create context that is expected to be required / common across tests"""
         return {
-            "resume_course_urls": {enrollment.course.id: random_url()},
+            "resume_course_urls": {enrollment.course_id: random_url()},
             "ecommerce_payment_page": random_url(),
             "course_mode_info": {
-                enrollment.course.id: {
+                enrollment.course_id: {
                     "verified_sku": str(uuid4()),
                     "days_for_upsell": randint(0, 14),
                 }
@@ -1249,10 +1249,10 @@ class TestLearnerDashboardSerializer(LearnerDashboardBaseTest):
         unfulfilled_entitlements = unfulfilled_entitlements or []
 
         resume_course_urls = {
-            enrollment.course.id: random_url() for enrollment in enrollments
+            enrollment.course_id: random_url() for enrollment in enrollments
         }
         course_mode_info = {
-            enrollment.course.id: {
+            enrollment.course_id: {
                 "verified_sku": str(uuid4()),
                 "days_for_upsell": randint(0, 14),
             }
@@ -1291,7 +1291,7 @@ class TestLearnerDashboardSerializer(LearnerDashboardBaseTest):
             pseudo_session_course_overviews[course_key] = course_overview
         programs = (
             {
-                str(enrollment.course.id): ProgramFactory.create_batch(3)
+                str(enrollment.course_id): ProgramFactory.create_batch(3)
                 for enrollment in enrollments
             }
             if has_programs
