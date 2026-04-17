@@ -1,0 +1,3 @@
+## 2024-04-17 - Convert div buttons to native button tags in video template
+**Learning:** Found that interactive UI elements (like close buttons and copy link actions) in the video sharing modal were implemented using generic `<div>` tags with `.btn-link` classes instead of semantic `<button>` elements. This breaks keyboard accessibility since divs are not naturally focusable or actionable via space/enter keys.
+**Action:** When working with Open edX templates, always convert interactive `<div>` elements styled with `.btn-link` to native `<button type="button">` elements to automatically gain built-in keyboard support and screen reader accessibility without changing visual styles.
