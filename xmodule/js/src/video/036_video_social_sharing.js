@@ -62,12 +62,13 @@
 
                 hideHandler: function(event) {
                     this.shareContainer.hide();
-                    this.toggleBtn.show();
+                    this.toggleBtn.show().attr("aria-expanded", "false").focus();
                 },
 
                 showHandler: function(event) {
                     this.shareContainer.show();
-                    this.toggleBtn.hide();
+                    this.toggleBtn.hide().attr("aria-expanded", "true");
+                    this.closeBtn.focus();
                 },
 
                 copyHandler: function(event) {

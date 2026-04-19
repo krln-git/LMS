@@ -1,0 +1,3 @@
+## 2024-04-19 - Video Social Share Keyboard Accessibility
+**Learning:** Video players often embed complex interactions like social share popovers that omit focus management and use styled `div`s for close buttons, leaving screen readers trapped. Replacing styled `div.btn-link` elements with native `<button type="button" class="btn-link">` and manually passing focus back to the toggle element significantly improves keyboard accessibility.
+**Action:** When working on interactive popovers or modals in older Django/jQuery templates, immediately check if `aria-expanded` and `aria-controls` are present on the toggle button, and ensure focus is programmatically shifted on show/hide.
