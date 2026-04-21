@@ -1,0 +1,3 @@
+## 2024-04-21 - Fix Video Social Sharing UX & Accessibility
+**Learning:** Using `<div>` for interactive elements like buttons requires extensive custom ARIA/keyboard support. Switching to native `<button>` ensures keyboard navigability. Custom toggles should update `aria-expanded` and properly manage focus by returning focus to the trigger or shifting it into the modal/popover content to support screen readers.
+**Action:** Always prefer native `<button>` elements for close/copy interactive controls. Implement explicit focus management and toggle `aria-expanded` attribute when building custom show/hide UI components.
