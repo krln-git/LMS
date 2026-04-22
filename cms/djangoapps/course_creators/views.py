@@ -71,12 +71,13 @@ def get_course_creator_status(user):
         'denied' = user has been denied course creation rights
         None = user does not exist in the table
     """
-    user = CourseCreator.objects.filter(user=user)
-    if user.count() == 0:
+    # Optimized: Use .first() instead of .count() == 0 followed by indexing to save a database query
+    creator = CourseCreator.objects.filter(user=user).first()
+    if creator is None:
         return None
     else:
         # User is defined to be unique, can assume a single entry.
-        return user[0].state
+        return creator.state
 
 
 def user_requested_access(user):
