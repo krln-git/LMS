@@ -1,0 +1,3 @@
+## 2024-05-24 - Convert div to button for accessibility
+**Learning:** Interactive elements like close or copy buttons are sometimes incorrectly implemented as styled `<div>` tags (e.g., `<div class="btn-link">`) in Open edX templates. Native `<button type="button">` elements inherently support proper keyboard navigability and screen reader interaction. Also, decorative FontAwesome icons should have `aria-hidden="true"` so they are ignored by screen readers.
+**Action:** When finding `div` tags used as interactive elements, refactor them into native `<button type="button">` elements. Add `aria-hidden="true"` to decorative icons. Ensure text rendered via Mako `_('...')` handles `aria-label` appropriately.
