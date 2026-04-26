@@ -1,0 +1,3 @@
+## 2024-05-14 - Improve accessibility of interactive elements in video player
+**Learning:** Found multiple instances where interactive UI controls were either using `<div>` styled as a button (e.g., share close button) or lacked `aria-label` for icon-only buttons (thumbs up/down). Also observed decorative FontAwesome icons not hidden from screen readers.
+**Action:** Converted `<div>` to `<button type="button">` with `aria-label`, added `aria-label`s utilizing Mako translation `${_('Text')}` for icon buttons, and added `aria-hidden="true"` to decorative icons. Ensure these patterns are strictly enforced in UI templates.
