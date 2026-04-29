@@ -1,0 +1,3 @@
+## 2024-05-24 - Interactive Elements using Divs and Self-Closing HTML Tags
+**Learning:** Open edX Mako templates sometimes implement interactive elements like close buttons as `<div>` tags styled with `.btn-link`, and use self-closing non-void tags (like `<span class="icon fa fa-close" />`). This breaks keyboard navigability, screen reader accessibility, and can cause HTML parsing issues.
+**Action:** Always refactor `<div>` tags with `.btn-link` into native `<button type="button">` elements (with Mako-translated `aria-label` via `${_('Text')}`). Also, ensure non-void elements like `<span>` use explicit closing tags (e.g., `<span></span>`) and decorative icons are hidden from screen readers using `aria-hidden="true"`.
