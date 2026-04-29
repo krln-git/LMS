@@ -79,9 +79,9 @@ from openedx.core.djangolib.js_utils import (
                                 style="width: 300px; border-radius: 6px; background-color: white; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15),0 .25rem .625rem rgba(0,0,0,.15)"
                             >
                                 ${_('Share this video')}
-                                <div class="btn-link close-btn float-right">
-                                    <span style="color: black" class="icon fa fa-close" />
-                                </div>
+                                <button type="button" class="btn-link close-btn float-right" aria-label="${_('Close share menu')}">
+                                    <span style="color: black" class="icon fa fa-close" aria-hidden="true"></span>
+                                </button>
 
                                 % for sharing_site_info in sharing_sites_info:
                                     <a
