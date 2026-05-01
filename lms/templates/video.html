@@ -69,19 +69,22 @@ from openedx.core.djangolib.js_utils import (
                             <button
                                 style="background-image: none; background-color: rgb(0, 38, 43); border-radius: 0px; color: white"
                                 class="social-toggle-btn btn"
+                                aria-expanded="false"
+                                aria-controls="social-share-container_${id}"
                             >
-                                <span class="icon fa fa-share-alt mr-2" style="text-shadow: none"></span>
+                                <span class="icon fa fa-share-alt mr-2" style="text-shadow: none" aria-hidden="true"></span>
                                 ${_('Share this video')}
                             </button>
                             <div
+                                id="social-share-container_${id}"
                                 hidden
                                 class="container-social-share color-black p-2"
                                 style="width: 300px; border-radius: 6px; background-color: white; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15),0 .25rem .625rem rgba(0,0,0,.15)"
                             >
                                 ${_('Share this video')}
-                                <div class="btn-link close-btn float-right">
-                                    <span style="color: black" class="icon fa fa-close" />
-                                </div>
+                                <button type="button" class="btn-link close-btn float-right" aria-label="${_('Close')}">
+                                    <span style="color: black" class="icon fa fa-close" aria-hidden="true"></span>
+                                </button>
 
                                 % for sharing_site_info in sharing_sites_info:
                                     <a
@@ -119,13 +122,13 @@ from openedx.core.djangolib.js_utils import (
                                             ${public_video_url}
                                         </div>
                                     </a>
-                                    <div
+                                    <button type="button"
                                         class="public-video-copy-btn btn-link d-inline-block float-right"
                                         data-url=${public_video_url}
                                     >
-                                        <span class="icon fa fa-link pr-1"></span>
+                                        <span class="icon fa fa-link pr-1" aria-hidden="true"></span>
                                         <span>${_('Copy')}</span>
-                                    </div>
+                                    </button>
                                   <span>
                                 </div>
                             </div>
