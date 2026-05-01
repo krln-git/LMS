@@ -1,0 +1,4 @@
+## 2024-05-01 - Fix SQL Injection in bulk_user_org_email_optout.py
+**Vulnerability:** SQL injection vulnerability in `openedx/core/djangoapps/user_api/management/commands/bulk_user_org_email_optout.py` caused by using string formatting (`.format()`) to insert unvalidated CSV data (`org` values) directly into an `INSERT ... ON DUPLICATE KEY UPDATE` raw SQL query string.
+**Learning:** Even internal management commands parsing CSV files can be vulnerable to SQL injection if input data is not sanitized or parameterized. Raw SQL queries must always use DB API parameters, rather than string manipulation, for safe data insertion.
+**Prevention:** Construct parameterized queries using placeholders (e.g., `%s`) and pass variables as a flattened list to the `cursor.execute(query, params)` argument. Never use string interpolation (`%`, `.format()`, or f-strings) for dynamic values in raw SQL.
