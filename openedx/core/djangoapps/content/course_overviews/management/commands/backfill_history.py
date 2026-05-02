@@ -102,23 +102,20 @@ class Command(BaseCommand):
 
                 for rows in self.chunks(lines, batch_size):
                     row_ids = [row['ID'] for row in rows]
-                    if table == 'course_overviews_courseoverview':
-                        ids = ','.join(f"'{id}'" for id in row_ids)
-                    else:
-                        ids = ','.join(row_ids)
+                    id_placeholders = ','.join(['%s'] * len(row_ids))
 
                     # Checks for existing historical records
                     with connection.cursor() as cursor:
                         query = """
                             SELECT COUNT(1)
                             FROM {historical_table}
-                            WHERE ID in ({ids})
+                            WHERE ID in ({id_placeholders})
                             AND history_type='+'
                             """.format(
                                 historical_table=historical_table,
-                                ids=ids
+                                id_placeholders=id_placeholders
                             )  # noqa
-                        cursor.execute(query)
+                        cursor.execute(query, row_ids)
                         count = cursor.fetchone()[0]
 
                     if count == len(rows):
