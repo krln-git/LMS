@@ -24,7 +24,7 @@
             },
 
             render: function(facetName, displayName, facetStats) {
-                this.$el.html(this.tpl({name: facetName, displayName: displayName, stats: facetStats}));
+                this.$el.html(this.tpl({name: _.escape(facetName), displayName: _.escape(displayName), stats: facetStats}));
                 this.$el.attr('data-facet', facetName);
                 this.$views = this.$el.find('ul');
                 return this;
