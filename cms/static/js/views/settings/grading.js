@@ -376,7 +376,7 @@ function(ValidatingView, _, $, ui, GraderView, StringUtils, HtmlUtils) {
 
         updateDesignation: function(e) {
             var index = $(e.currentTarget).closest('li').index();
-            this.descendingCutoffs[index].designation = $(e.currentTarget).html();
+            this.descendingCutoffs[index].designation = $(e.currentTarget).text();
             this.saveCutoffs();
         },
 
