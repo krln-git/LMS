@@ -62,12 +62,12 @@ def is_mode_upsellable(user, enrollment, course=None):
         user (:class:`.AuthUser`): The user from the request.user property
         enrollment (:class:`.CourseEnrollment`): The enrollment under consideration.
         course (:class:`.ModulestoreCourse`): Optional passed in modulestore course.
-            If provided, it is expected to correspond to `enrollment.course.id`.
+            If provided, it is expected to correspond to `enrollment.course_id`.
             If not provided, the course will be loaded from the modulestore.
             We use the course to retrieve user partitions when calculating whether
             the upgrade link will be shown.
     """
-    partition_service = PartitionService(enrollment.course.id, course=course)
+    partition_service = PartitionService(enrollment.course_id, course=course)
     enrollment_track_partition = partition_service.get_user_partition(ENROLLMENT_TRACK_PARTITION_ID)
     group = partition_service.get_group(user, enrollment_track_partition)
     current_mode = None
@@ -91,7 +91,7 @@ def can_show_verified_upgrade(user, enrollment, course=None):
         enrollment (:class:`.CourseEnrollment`): The enrollment under consideration.
             If None, then the enrollment is not considered to be upgradeable.
         course (:class:`.ModulestoreCourse`): Optional passed in modulestore course.
-            If provided, it is expected to correspond to `enrollment.course.id`.
+            If provided, it is expected to correspond to `enrollment.course_id`.
             If not provided, the course will be loaded from the modulestore.
             We use the course to retrieve user partitions when calculating whether
             the upgrade link will be shown.

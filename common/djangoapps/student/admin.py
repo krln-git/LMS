@@ -621,7 +621,7 @@ class CourseEnrollmentCelebrationAdmin(DisableEnrollmentAdminMixin, admin.ModelA
         model = CourseEnrollmentCelebration
 
     def course(self, obj):
-        return obj.enrollment.course.id
+        return obj.enrollment.course_id
     course.short_description = 'Course'
 
     def user(self, obj):

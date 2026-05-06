@@ -237,7 +237,7 @@ def get_enrollment_overviews(user, program, enrollments, request):
     Returns list[dict]
     """
     overviews_by_course_key = {
-        enrollment.course.id: enrollment.course for enrollment in enrollments
+        enrollment.course_id: enrollment.course for enrollment in enrollments
     }
     course_keys = list(overviews_by_course_key.keys())
     certficates_by_course_key = get_certificates_for_user_by_course_keys(user, course_keys)

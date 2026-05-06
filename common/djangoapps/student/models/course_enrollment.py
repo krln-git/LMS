@@ -1803,7 +1803,7 @@ class CourseEnrollmentCelebration(TimeStampedModel):
     def __str__(self):
         return (
             '[CourseEnrollmentCelebration] course: {}; user: {}'
-        ).format(self.enrollment.course.id, self.enrollment.user.username)
+        ).format(self.enrollment.course_id, self.enrollment.user.username)
 
     @staticmethod
     def should_celebrate_first_section(enrollment):
@@ -1838,14 +1838,14 @@ class CourseEnrollmentCelebration(TimeStampedModel):
             return False
 
         try:
-            goal = CourseGoal.objects.get(user=enrollment.user, course_key=enrollment.course.id)
+            goal = CourseGoal.objects.get(user=enrollment.user, course_key=enrollment.course_id)
             if not goal.days_per_week:
                 return False
 
             today = date.today()
             monday_date = today - timedelta(days=today.weekday())
             week_activity_count = UserActivity.objects.filter(
-                user=enrollment.user, course_key=enrollment.course.id, date__gte=monday_date,
+                user=enrollment.user, course_key=enrollment.course_id, date__gte=monday_date,
             ).count()
             return week_activity_count == goal.days_per_week
         except CourseGoal.DoesNotExist:

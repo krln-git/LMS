@@ -100,7 +100,7 @@ def refund_order_voucher(sender, course_enrollment, skip_refund=False, **kwargs)
         return
     if not EnterpriseCourseEnrollment.objects.filter(
         enterprise_customer_user__user_id=course_enrollment.user_id,
-        course_id=str(course_enrollment.course.id)
+        course_id=str(course_enrollment.course_id)
     ).exists():
         return
 

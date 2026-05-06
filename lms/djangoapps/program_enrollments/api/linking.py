@@ -189,7 +189,7 @@ def unlink_program_enrollment(program_enrollment):
     program_course_enrollments = program_enrollment.program_course_enrollments.all()
 
     for pce in program_course_enrollments:
-        course_key = pce.course_enrollment.course.id
+        course_key = pce.course_enrollment.course_id
         modes = CourseMode.modes_for_course_dict(course_key)
 
         update_enrollment_kwargs = {
