@@ -1,0 +1,3 @@
+## 2024-05-18 - Added ARIA labels to transcript feedback buttons
+**Learning:** Found that transcript feedback thumbs up/down buttons (`<button class="thumbs-up-btn">`) were completely missing accessible names, and their decorative FontAwesome icons lacked `aria-hidden`. When fixing this in Mako templates, it's crucial to wrap the ARIA label text in the `_()` gettext function (e.g. `aria-label="${_('Thumbs up')}"`) so screen reader text remains fully translatable.
+**Action:** Always verify icon-only buttons have localized `aria-label`s and `aria-hidden` icons. Use `git grep '<button'` filtering out `aria-label` and `sr` classes to audit existing buttons.
