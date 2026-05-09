@@ -23,7 +23,9 @@ class LmsSearchFilterGenerator(SearchFilterGenerator):
     def _enrollments_for_user(self, user):
         """ Return the specified user's course enrollments """
         if user not in self._user_enrollments:
-            self._user_enrollments[user] = CourseEnrollment.enrollments_for_user(user)
+            # Performance Optimization: Use values_list to fetch only the course_id
+            # instead of hydrating full CourseEnrollment objects, which saves memory and processing time.
+            self._user_enrollments[user] = CourseEnrollment.enrollments_for_user(user).values_list('course_id', flat=True)
         return self._user_enrollments[user]
 
     def field_dictionary(self, **kwargs):
@@ -34,7 +36,7 @@ class LmsSearchFilterGenerator(SearchFilterGenerator):
             field_dictionary['course'] = []
         elif not course_id:
             user_enrollments = self._enrollments_for_user(kwargs['user'])
-            field_dictionary['course'] = [str(enrollment.course_id) for enrollment in user_enrollments]
+            field_dictionary['course'] = [str(course_id) for course_id in user_enrollments]
 
         # if we have no specific course and an org filter, only include results for this org filter
         if not course_id:
