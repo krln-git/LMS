@@ -63,11 +63,17 @@
                 hideHandler: function(event) {
                     this.shareContainer.hide();
                     this.toggleBtn.show();
+                    if (this.toggleBtn) {
+                        this.toggleBtn.focus();
+                    }
                 },
 
                 showHandler: function(event) {
                     this.shareContainer.show();
                     this.toggleBtn.hide();
+                    if (this.closeBtn) {
+                        this.closeBtn.focus();
+                    }
                 },
 
                 copyHandler: function(event) {
