@@ -1,0 +1,3 @@
+## 2024-05-24 - Video Share Modal Accessibility Improvement
+**Learning:** Custom modal and popover elements built with divs and spans often lack proper focus management and semantic accessibility. Replacing div-based close buttons with native `<button>` elements, adding ARIA labels, and managing focus between opening and closing the popover improves keyboard navigability and screen reader support significantly.
+**Action:** Always ensure that custom popovers have clear focus management where focus shifts to the open popover, and shifts back to the toggle button upon closing. Additionally, use semantic `<button>` elements for all interactive controls to ensure native accessibility support without custom keydown handlers.
