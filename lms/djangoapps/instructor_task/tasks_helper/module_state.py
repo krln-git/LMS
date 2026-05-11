@@ -425,7 +425,7 @@ def _get_modules_to_update(course_id, usage_keys, student_identifier, filter_fcn
     if filter_fcn is not None:
         student_modules = filter_fcn(student_modules)
 
-    can_create_student_modules = (override_score_task and (student_modules.count() == 0) and student is not None)
+    can_create_student_modules = (override_score_task and not student_modules.exists() and student is not None)
     if can_create_student_modules:
         student_modules = [
             StudentModule.objects.get_or_create(course_id=course_id, student=student, module_state_key=key)[0]
