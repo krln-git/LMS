@@ -1,0 +1,3 @@
+## 2024-05-12 - Replacing .count() == 0 with .exists() and .first()
+**Learning:** Using `.count() == 0` for an existence check immediately followed by accessing the first element via an index (e.g., `user[0]`) is an anti-pattern that triggers two separate database queries (`COUNT` and `LIMIT 1`). Additionally, using `.count() == 0` solely for boolean existence checks is less efficient than `.exists()`.
+**Action:** Replace `.count() == 0` followed by `[0]` with `.first()` to perform both the existence check and retrieval in a single query. Replace `.count() == 0` used solely for existence checks with `.exists()`.
