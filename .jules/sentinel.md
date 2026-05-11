@@ -1,0 +1,4 @@
+## 2024-05-11 - SQL Injection in Raw Query IN clauses
+**Vulnerability:** A raw SQL query constructed an `IN` clause by directly interpolating serialized string values using `.format()` instead of parameterized placeholders. This created a critical SQL injection vulnerability since user input (like course IDs or org aliases) was evaluated directly by the database engine.
+**Learning:** Raw SQL string construction using `.format()` for list inputs is a risky anti-pattern. While typical values might be safe, it bypasses the database connector's parameter escaping entirely.
+**Prevention:** Always use dynamically generated parameterized placeholders (e.g., `','.join(['%s'] * len(values))`) for the `IN` clause and pass the flattened list of variables securely through the `params` argument in `cursor.execute()`.
