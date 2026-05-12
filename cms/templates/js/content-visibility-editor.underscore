@@ -3,7 +3,7 @@
 <div class="modal-section-content staff-lock">
     <% if (enable_hide_from_toc_ui) { %>
         <div class="enable-hide-from-toc-container">
-            <span class="icon fa fa-solid fa-link icon-message"></span>
+            <span class="icon fa fa-solid fa-link icon-message" aria-hidden="true"></span>
             <p class="text-message"><%- gettext('To hide the subsections and keep them accesible through links, you must adjust it from the section that contains them.') %></p>
         </div>
     <% } %>

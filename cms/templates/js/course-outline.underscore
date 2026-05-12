@@ -425,7 +425,7 @@ if (is_proctored_exam) {
                     </div>
                     <% if (enableHideFromTOC && xblockInfo.isSequential()) { %>
                         <button type="button" class="button btn-primary subsection-share-link-button">
-                            <span class="icon fa fa-link icon-share-link"></span><%- gettext('Share') %>
+                            <span class="icon fa fa-link icon-share-link" aria-hidden="true"></span><%- gettext('Share') %>
                         </button>
                     <% } %>
                 </div>
