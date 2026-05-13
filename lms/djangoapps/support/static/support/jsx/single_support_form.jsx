@@ -322,8 +322,7 @@ class RenderForm extends React.Component {
                             onClick={() => this.handleSuggestionClick(suggestion.html_url)}
                             onMouseOver={() => this.setState({ activeSuggestion: index })}
                         >
-                            {/* eslint-disable-next-line react/no-danger */}
-                            <div dangerouslySetInnerHTML={{ __html: suggestion.title }} />
+                            <div>{suggestion.title}</div>
                         </li>
                     ))}
                 </ul>
