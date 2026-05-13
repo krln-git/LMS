@@ -434,8 +434,7 @@
 
                         if (collection.getSearchString()) {
                             Backbone.history.navigate(searchUrl, {trigger: true});
-                            // xss-lint: disable=javascript-jquery-html
-                            this.$el.find('.page-description').html(this.searchDescription());
+                            this.$el.find('.page-description').text(this.searchDescription());
                         } else if (Backbone.history.getFragment() === searchUrl) {
                             Backbone.history.navigate('topics/' + topic.get('id'), {trigger: true});
                         }
