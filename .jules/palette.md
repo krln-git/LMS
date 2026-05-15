@@ -1,0 +1,3 @@
+## 2024-05-23 - Focus Management and Semantic Buttons in Custom Menus
+**Learning:** Custom UI toggles (like the video social share menu) must manage keyboard focus when opened and closed to maintain an accessible tab order, and their actionable elements must use native `<button>` tags with proper ARIA attributes rather than styled `<div>` elements.
+**Action:** When implementing or fixing custom UI menus, always programmatically shift focus to the first interactive element on open, return focus to the toggle on close, and ensure all interactive elements are semantic `<button>`s with `aria-label`s and `aria-hidden="true"` on decorative icons.
