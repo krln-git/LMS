@@ -1,0 +1,2 @@
+"Because the number of parameters passed will exceed the number of placeholders in the query, the database cursor will throw a mismatch error (e.g., TypeError: not all arguments converted during string formatting) and the script will crash.
+Blocking: The duplicate list concatenation in email_opt_in_list.py (params = org_aliases + org_aliases + courses) is a major bug that breaks the script. It must be corrected to params = org_aliases + courses before this patch can be merged."
