@@ -229,12 +229,15 @@ class Command(BaseCommand):
                 LEFT JOIN auth_userprofile AS profile ON profile.user_id=user.id
             WHERE enrollment.course_id IN ( {course_id_list} )
             """
-        ).format(
+        )
+
+        query = query.format(
             course_id_list=self._sql_list(courses),
             org_list=self._sql_list(org_aliases)
         )
 
-        cursor.execute(query)
+        params = list(org_aliases) + list(org_aliases) + list(courses)
+        cursor.execute(query, params)
         row_count = 0
         for row in self._iterate_results(cursor):
             user_id, username, email, full_name, course_id, is_opted_in, pref_set_datetime = row
@@ -284,7 +287,7 @@ class Command(BaseCommand):
         """
         Serialize a list of values for including in a SQL "IN" statement.
         """
-        return ",".join([f'"{val}"' for val in values])
+        return ",".join(["%s"] * len(values))
 
     def _db_cursor(self):
         """
