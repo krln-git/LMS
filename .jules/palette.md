@@ -1,0 +1,3 @@
+## 2025-02-14 - Improve accessibility of video player icon buttons
+**Learning:** When an interface relies on FontAwesome icons to communicate actions (e.g. sharing, copying links, submitting feedback), applying explicit `aria-hidden="true"` attributes to the icon shapes and placing the icon within an interactive element (e.g., `<button>`) with an `aria-label` prevents screen readers from redundantly announcing visual icon classes and instead provides clear intent. Also, replacing interactive `div`s with native `<button>`s ensures standard keyboard accessibility.
+**Action:** Always wrap interactive icon elements in semantic `<button>` tags with `aria-label`s, and set `aria-hidden="true"` on the icon itself.
