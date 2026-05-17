@@ -1,0 +1,3 @@
+## 2024-05-23 - Avoid .count() == 0 followed by indexing for existence checks in Django
+**Learning:** Checking for existence using `.count() == 0` and then subsequently accessing the first element via indexing (e.g. `obj[0]`) is an anti-pattern in Django that generates two queries (a `COUNT` and a `LIMIT 1`). Using `.count() == 0` solely for existence checks is also inefficient compared to `.exists()`.
+**Action:** Replace `.count() == 0` combined with indexing with `.first()` which combines the existence check and retrieval into a single query. Replace standalone `.count() == 0` existence checks with `.exists()`.
