@@ -1,0 +1,3 @@
+## 2024-05-21 - Accessible Close Buttons in Open edX Modals
+**Learning:** When using `.btn-link` for close buttons containing FontAwesome icons, native `<button>` tags should be used over `<div>` to enable natural keyboard focus. Icons must have `aria-hidden="true"`, and the button requires an `aria-label="${_('Close')}"` wrapped in standard quotes for accessibility, and non-void elements like `<span>` must not use self-closing syntax in Mako.
+**Action:** Always replace `<div>`-based buttons with `<button>`, ensure explicit translations are provided as `aria-labels` wrapped in quotes, use explicit closing tags for `<span>`, and hide decorative icons from screen readers.
