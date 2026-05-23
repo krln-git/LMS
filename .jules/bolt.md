@@ -1,0 +1,3 @@
+## 2024-05-15 - Django ORM Optimization: count() vs exists() and first()
+**Learning:** Using `.count() == 0` for an existence check immediately followed by accessing the first element via an index triggers two separate database queries (`COUNT` and `LIMIT 1`). Using `.count() == 0` solely for boolean existence checks triggers a full table/index count which is slower than checking for simple existence.
+**Action:** Replace `.count() == 0` followed by index access with `.first()` to perform both the existence check and retrieval in a single query. Replace `.count() == 0` used solely for boolean existence checks with `.exists()`.
