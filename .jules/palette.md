@@ -1,0 +1,3 @@
+## 2024-05-24 - Improve Modal Close Button Accessibility
+**Learning:** In Open edX HTML5 templates, self-closing tags like `<span />` are invalid and can cause parsing issues. Furthermore, interactive elements like close buttons should use semantic `<button>` tags with `aria-label`s instead of clickable `<div>` elements for better keyboard and screen reader accessibility. Additionally, decorative icons need `aria-hidden="true"` and translations must be wrapped in standard HTML quotes.
+**Action:** When implementing close toggles, always use a native `<button>`, explicitly close non-void elements like `<span></span>`, hide decorative icon elements with `aria-hidden="true"`, and provide proper accessible names with quoted translation variables.
