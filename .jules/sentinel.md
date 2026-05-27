@@ -1,0 +1,4 @@
+## 2024-05-27 - Fix Command Injection in XML Cleaning Script
+**Vulnerability:** Found `os.system()` being used to execute a shell command (`diff`) with user-controllable variables (`course_dir` and `export_dir`) in `lms/djangoapps/courseware/management/commands/clean_xml.py`. This leads to a command injection vulnerability.
+**Learning:** `os.system` passes arguments through a shell, allowing attackers to append malicious commands (e.g., using `;` or `&&`). Developers used `os.system` because it was an easy way to print command output to stdout without worrying about exceptions from non-zero exit codes.
+**Prevention:** Always use the `subprocess` module with argument arrays (e.g., `subprocess.run([args], check=False)`) instead of string interpolation for shell commands. This securely passes arguments without invoking a shell. Use `check=False` when expecting non-zero exit codes (like `diff`) to prevent exceptions.
