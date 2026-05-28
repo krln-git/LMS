@@ -103,9 +103,9 @@ class Command(BaseCommand):
                 for rows in self.chunks(lines, batch_size):
                     row_ids = [row['ID'] for row in rows]
                     if table == 'course_overviews_courseoverview':
-                        ids = ','.join(f"'{id}'" for id in row_ids)
+                        ids = ','.join(['%s'] * len(row_ids))
                     else:
-                        ids = ','.join(row_ids)
+                        ids = ','.join(['%s'] * len(row_ids))
 
                     # Checks for existing historical records
                     with connection.cursor() as cursor:
@@ -118,7 +118,7 @@ class Command(BaseCommand):
                                 historical_table=historical_table,
                                 ids=ids
                             )  # noqa
-                        cursor.execute(query)
+                        cursor.execute(query, row_ids)
                         count = cursor.fetchone()[0]
 
                     if count == len(rows):
