@@ -1,0 +1,4 @@
+## 2024-05-31 - Fix Command Injection in XML Cleaning Script
+**Vulnerability:** Command injection vulnerability (CWE-78) via `os.system` using unsanitized string formatting in `lms/djangoapps/courseware/management/commands/clean_xml.py`. The `course_dir` and `export_dir` variables were directly interpolated into a shell command.
+**Learning:** Using `os.system` with string formatting allows attackers to execute arbitrary shell commands if the inputs are not properly sanitized. In this script, it was used to diff directories, and it expected standard behavior without throwing exceptions on non-zero exit codes.
+**Prevention:** Always use `subprocess.run` with a list of arguments and `shell=False` (default) instead of `os.system` or `subprocess.run` with `shell=True`. When substituting for commands that expect non-zero exit codes (like `diff`), use `check=False`. Explicitly cast dynamic variables representing file paths to strings to prevent TypeErrors.
