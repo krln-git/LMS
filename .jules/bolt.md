@@ -1,0 +1,3 @@
+## 2024-05-14 - Anti-pattern: `.count() == 0` for existence checks
+**Learning:** Using `.count() == 0` triggers a `SELECT COUNT(*)` query. This forces the database to scan all matching rows (or index entries) just to verify existence. Additionally, checking `.count() == 0` and then immediately accessing `user[0]` causes two distinct queries (`COUNT` then `LIMIT 1`).
+**Action:** Always replace `.count() == 0` with `.exists()` when performing pure boolean existence checks to leverage `LIMIT 1`. When existence checking precedes accessing the object, combine them using `.first()` to perform both the check and fetch in a single, efficient query.
