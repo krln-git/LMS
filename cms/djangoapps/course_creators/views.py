@@ -103,7 +103,8 @@ def _add_user(user, state):
 
     If the user is marked as is_staff, this method is a no-op (False will be returned).
     """
-    if not user.is_staff and CourseCreator.objects.filter(user=user).count() == 0:
+    # ⚡ Bolt: Use .exists() instead of .count() == 0 for efficient existence check
+    if not user.is_staff and not CourseCreator.objects.filter(user=user).exists():
         entry = CourseCreator(user=user, state=state)
         entry.save()
         return True
