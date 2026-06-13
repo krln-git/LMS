@@ -1,0 +1,5 @@
+
+## 2024-05-18 - Command Injection Risk via os.system (clean_xml.py)
+**Vulnerability:** A script was directly interpolating user-controlled file paths into an `os.system(f"diff -r {course_dir} {export_dir}")` shell execution.
+**Learning:** `os.system()` uses `sh -c` allowing arbitrary code execution if inputs contain bash metacharacters (e.g., `;`, `|`, `&`). In this context where the caller actually expects `diff` to fail sometimes (meaning standard non-zero exit codes), one must explicitly use `subprocess.run` with `check=False`. Using `check=True` would cause the command to raise `CalledProcessError` on a harmless file mismatch, thereby breaking the script entirely.
+**Prevention:** Always use `subprocess.run` passing arguments as a list of strings instead of a concatenated shell string. For operations like `diff` where non-zero codes indicate standard state differences, ensure `check=False` is applied. Explicitly convert dynamic parameter instances (`str(path_var)`) to avoid `TypeError` on arbitrary object values.
