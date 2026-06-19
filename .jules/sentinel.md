@@ -1,0 +1,4 @@
+## 2024-05-24 - Command Injection via os.system in clean_xml.py
+**Vulnerability:** Command injection risk identified where `os.system` was used with a string-formatted diff command, making it vulnerable to injected payloads via the course directory path in `lms/djangoapps/courseware/management/commands/clean_xml.py`.
+**Learning:** The script explicitly relies on the standard behaviour of `diff` (which returns a non-zero exit code when differences are found). Replacing `os.system` with `subprocess.check_call` would break this behavior because `check_call` raises an exception for non-zero exit codes.
+**Prevention:** Always use `subprocess.run([args], check=False)` instead of `os.system()` to safely execute shell commands with untrusted inputs while matching legacy behavior. Ensure dynamic variables like paths are cast to strings (e.g. `str(path)`) since they might be pathlib objects.
