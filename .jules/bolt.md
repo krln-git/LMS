@@ -1,0 +1,3 @@
+## 2024-06-25 - Use `.exists()` over `len()` and `.count() == 0` in Django QuerySets
+**Learning:** Found multiple instances where `.count() == 0` or `len() != 0` were used on unresolved Django QuerySets. Calling `len()` forces the database to evaluate and load all matching records into memory, creating a severe performance anti-pattern. `.count() == 0` is less severe but still executes a full `COUNT(*)` query when only existence checking is needed.
+**Action:** Always replace `len(queryset) != 0` and `queryset.count() == 0` with `queryset.exists()` or `.first() is None` (when the object might be used) to optimize database queries and memory usage.
