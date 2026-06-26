@@ -50,6 +50,7 @@ from openedx.core.djangolib.js_utils import js_escaped_string
                     <h3 class="sr-only">${_("Print or share your certificate:")}</h3>
                     % if facebook_share_enabled:
                       <button class="action action-share-facebook btn-inverse btn-small icon-only" id="action-share-facebook"
+                        aria-label="${_('Post on Facebook')}"
                         ## xss-lint: disable=mako-invalid-html-filter
                         onclick="FaceBook.share({share_link: '${share_url | n, js_escaped_string}'});">
                           <span class="icon fa fa-facebook-official" aria-hidden="true"></span>
@@ -59,6 +60,7 @@ from openedx.core.djangolib.js_utils import js_escaped_string
                     % if twitter_share_enabled:
                       <button data-tooltip="${_('Share on Twitter')}"
                         class="action action-share-twitter btn-inverse btn-small icon-only"
+                        aria-label="${_('Share on Twitter')}"
                         title="${_('Share on Twitter')}"
                         ## xss-lint: disable=mako-invalid-html-filter
                         onclick="popupWindow('${twitter_url | n, js_escaped_string}', 'tweetWindow', 640, 480); return false;">
@@ -68,7 +70,7 @@ from openedx.core.djangolib.js_utils import js_escaped_string
                     %endif
 
                     %if linked_in_url:
-                    <button class="action action-linkedin-profile btn-inverse btn-small icon-only" id="action-share-linkedin" title="${_('Add to LinkedIn Profile')}" data-course-id="${course_id}" data-certificate-mode="${course_mode}">
+                    <button class="action action-linkedin-profile btn-inverse btn-small icon-only" id="action-share-linkedin" aria-label="${_('Add to LinkedIn Profile')}" title="${_('Add to LinkedIn Profile')}" data-course-id="${course_id}" data-certificate-mode="${course_mode}">
                         <span class="icon fa fa-linkedin" aria-hidden="true"></span>
                         <span class="action-label">${_("Add to LinkedIn Profile")}</span>
                     </button>
