@@ -887,7 +887,8 @@ def confirm_email_change(request, key):
             'new_email': pec.new_email
         }
 
-        if len(User.objects.filter(email=pec.new_email)) != 0:
+        # Bolt: Use .exists() instead of len() to avoid evaluating entire QuerySet in memory
+        if User.objects.filter(email=pec.new_email).exists():
             response = render_to_response("email_exists.html", {})
             transaction.set_rollback(True)
             return response
