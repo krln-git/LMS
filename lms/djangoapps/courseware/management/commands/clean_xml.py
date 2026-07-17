@@ -4,6 +4,7 @@ Contains functions that handle XML course data
 
 
 import os
+import subprocess
 import sys
 import traceback
 
@@ -129,7 +130,7 @@ def check_roundtrip(course_dir):
     # diff = dircmp(course_dir, export_dir, ignore=[], hide=[])
     print('======== Roundtrip diff: =========')
     sys.stdout.flush()  # needed to make diff appear in the right place
-    os.system(f'diff -r {course_dir} {export_dir}')
+    subprocess.run(['diff', '-r', course_dir, export_dir], check=False)  # 🛡️ Sentinel: Prevent command injection by using subprocess.run without a shell
     print('======== ideally there is no diff above this =======')
 
 
