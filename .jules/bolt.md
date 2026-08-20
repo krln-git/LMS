@@ -1,0 +1,3 @@
+## 2024-05-14 - Replace `.count() == 0` with `.exists()` and `.first()`
+**Learning:** In Django QuerySets, using `.count() == 0` generates a database `COUNT` SQL query, which can be inefficient for checking existence. Additionally, checking `.count() == 0` and then immediately fetching an object using index like `user[0]` generates two queries.
+**Action:** Replace simple existence checks like `QuerySet.count() == 0` with `QuerySet.exists()` to generate a more efficient `EXISTS` SQL query. When checking for existence and retrieving the first item, use `QuerySet.first()` which handles both in a single query and returns `None` if the QuerySet is empty.
