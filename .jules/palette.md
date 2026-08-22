@@ -1,0 +1,3 @@
+## 2024-05-18 - Mako expressions in Backbone templates
+**Learning:** When assigning localized strings to HTML attributes (like `aria-label`) in Open edX Backbone/Underscore templates (`.underscore`), use `<%- gettext('Text') %>` syntax instead of Mako syntax. Also ensure the evaluated expression is enclosed in explicit HTML quotes (e.g. `aria-label="<%- gettext('Delete') %>"`) so that spaces in the resulting string do not break the HTML.
+**Action:** Always use `<%- gettext('...') %>` and explicit HTML quotes for aria-labels in Backbone/Underscore templates to maintain valid HTML and correct accessibility announcements.
