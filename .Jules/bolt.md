@@ -1,0 +1,3 @@
+## 2023-10-27 - Replace count() with exists()
+**Learning:** Checking `.count() == 0` on QuerySets is a performance anti-pattern because it forces a `COUNT` query on the database. Using `.exists()` translates to an `EXISTS` query which is faster and stops immediately when a match is found. If we immediately fetch an item after checking count (e.g., `user[0]`), it generates a two-query anti-pattern that should be replaced with a single `.first()` call.
+**Action:** Always use `.exists()` instead of `.count() == 0` for simple existence checks, and use `.first()` when retrieving the first item if it exists.
