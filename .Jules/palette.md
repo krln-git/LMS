@@ -1,0 +1,3 @@
+## 2024-05-18 - Added aria-label to Icon-Only Buttons in Backbone Templates
+**Learning:** When assigning localized string expressions to HTML attributes (such as `aria-label`) in Backbone/Underscore templates (`.underscore`), you must use `<%- gettext('Text') %>` enclosed in explicit HTML quotes (e.g., `aria-label="<%- gettext('Text') %>"`). This prevents parsing errors and ensures accessibility is maintained, particularly when the translation strings contain spaces.
+**Action:** Always ensure that icon-only buttons have an `aria-label` attribute and that localized string expressions used as attributes in templates are properly quoted and follow the specific template syntax (e.g., `<%- gettext('...') %>` for Backbone).
