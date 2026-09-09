@@ -18,6 +18,8 @@ Sample usage::
 
 
 import os
+import shlex
+import subprocess
 import re
 import shutil
 import tempfile
@@ -105,7 +107,9 @@ def _run_tests_and_check_for_failures(output_file_name):
     """
     global verbose_option
     pytest_command = _get_pytest_command(output_file_name)
-    test_output = os.popen(pytest_command).read()
+    # 🛡️ Sentinel: Prevent command injection by using subprocess.run with shlex.split instead of os.popen
+    result = subprocess.run(shlex.split(pytest_command), capture_output=True, text=True)
+    test_output = result.stdout + result.stderr
     if verbose_option:
         print(test_output)
     failures_search = re.search(r'=== (\d+) failed', test_output)
