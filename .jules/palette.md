@@ -1,0 +1,3 @@
+## 2024-03-22 - Missing ARIA labels in Backbone/Underscore templates
+**Learning:** Discovered icon-only delete buttons in CMS Underscore templates (`cms/templates/js/`) lacked `aria-label`s. Since these are evaluated client-side via Backbone/Underscore, we must use `<%- gettext("Delete") %>` rather than server-side Mako syntax (`${_("Delete")}`). Additionally, we must wrap this evaluated expression in quotes when assigning it to `aria-label`.
+**Action:** Always add `aria-label="<%- gettext(\"...\") %>"` to icon-only buttons in `.underscore` templates to ensure assistive technology can read the button.
