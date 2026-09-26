@@ -1,0 +1,3 @@
+## 2024-05-18 - Escaping localized strings in attributes
+**Learning:** When assigning Backbone/Underscore translation tags (like `<%- gettext(\"Text\") %>`) to HTML attributes, they must be enclosed in explicit HTML quotes (e.g., `aria-label="<%- gettext(\"Text\") %>"`) to prevent parsing errors and accessibility issues if the evaluated string contains spaces. Furthermore, when using a python script to patch these files, use triple double-quotes to encapsulate the string to prevent backslash-escaping JS syntax. Avoid adding `aria-label` to buttons that already have `<span class="sr">` children.
+**Action:** Always double quote localized string output injected into HTML attributes, and use robust multi-line strings when scripting patches.
