@@ -1,0 +1,3 @@
+## 2024-05-24 - Django QuerySet Count Anti-pattern
+**Learning:** In Django, using `.count() == 0` triggers an expensive database COUNT query. When followed by an index access `[0]`, it results in two database queries instead of one. Additionally, assigning the queryset to a variable that shadows a function argument (like `user = ...filter(user=user)`) reduces readability.
+**Action:** Use `.exists()` instead of `.count() == 0` for simple existence checks to avoid a full COUNT query, and replace the two-query `.count() == 0` + `[0]` pattern with a single `.first()` call. Always rename shadowed variables (e.g. `course_creator` instead of `user`) when refactoring.
