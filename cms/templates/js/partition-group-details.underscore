@@ -29,11 +29,11 @@
             </li>
             <% if (_.isEmpty(usage)) { %>
                 <li class="action action-delete wrapper-delete-button" data-tooltip="<%- gettext('Delete') %>">
-                    <button class="delete action-icon" title="<%- gettext('Delete') %>"><span class="icon fa fa-trash-o" aria-hidden="true"></span></button>
+                    <button class="delete action-icon" title="<%- gettext('Delete') %>" aria-label="<%- gettext('Delete') %>"><span class="icon fa fa-trash-o" aria-hidden="true"></span></button>
                 </li>
             <% } else { %>
                 <li class="action action-delete wrapper-delete-button" data-tooltip="<%- gettext('Cannot delete when in use by a unit') %>">
-                    <button class="delete action-icon is-disabled" disabled="disabled" title="<%- gettext('Delete') %>"><span class="icon fa fa-trash-o" aria-hidden="true"></span></button>
+                    <button class="delete action-icon is-disabled" disabled="disabled" title="<%- gettext('Delete') %>" aria-label="<%- gettext('Delete') %>" aria-disabled="true"><span class="icon fa fa-trash-o" aria-hidden="true"></span></button>
                 </li>
             <% } %>
         <% } %>
