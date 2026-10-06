@@ -1,0 +1,3 @@
+## 2024-10-06 - Missing ARIA Labels on Icon-only Action Buttons
+**Learning:** Icon-only action buttons (like Delete) in Studio's Underscore templates frequently use the `title` attribute for visual tooltips but omit `aria-label`s, which are essential for robust screen reader accessibility since `title` is not consistently announced across all screen reader/browser combinations.
+**Action:** When adding or updating icon-only buttons in templates, always explicitly include an `aria-label` attribute (e.g. `aria-label="<%- gettext('Action') %>"`) in addition to any `title` tooltips to ensure non-visual accessibility.
