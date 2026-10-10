@@ -71,12 +71,13 @@ def get_course_creator_status(user):
         'denied' = user has been denied course creation rights
         None = user does not exist in the table
     """
-    user = CourseCreator.objects.filter(user=user)
-    if user.count() == 0:
+    # Bolt: Replace .count() == 0 with .first() to reduce DB queries
+    course_creator = CourseCreator.objects.filter(user=user).first()
+    if not course_creator:
         return None
     else:
         # User is defined to be unique, can assume a single entry.
-        return user[0].state
+        return course_creator.state
 
 
 def user_requested_access(user):
@@ -103,7 +104,8 @@ def _add_user(user, state):
 
     If the user is marked as is_staff, this method is a no-op (False will be returned).
     """
-    if not user.is_staff and CourseCreator.objects.filter(user=user).count() == 0:
+    # Bolt: Replace .count() == 0 with .exists() for faster presence check
+    if not user.is_staff and not CourseCreator.objects.filter(user=user).exists():
         entry = CourseCreator(user=user, state=state)
         entry.save()
         return True
