@@ -2,7 +2,7 @@
     <header class="collection-header group-configuration-header">
         <h3 class="title group-configuration-title">
             <a href="#" class="toggle group-toggle <% if(showGroups){ print('hide'); } else { print('show'); } %>-groups">
-                <span class="ui-toggle-expansion icon fa fa-caret-<% if(showGroups){ print('down'); } else { print('right'); } %>"></span>
+                <span class="ui-toggle-expansion icon fa fa-caret-<% if(showGroups){ print('down'); } else { print('right'); } %>" aria-hidden="true"></span>
                 <%- name %>
             </a>
         </h3>
