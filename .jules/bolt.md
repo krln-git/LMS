@@ -1,0 +1,3 @@
+## 2024-05-24 - Django QuerySet Evaluation Inefficiency
+**Learning:** In Django, using `.count() == 0` forces a full COUNT query on the database. If you just need to check existence, `.exists()` is much faster as it translates to an EXISTS query. Even worse, if you check `.count() == 0` and then access the first element (e.g., `qs[0]`), you execute two queries. In this case, `qs.first()` is optimal as it evaluates the query, returns the first instance or None, and reduces it all to a single query.
+**Action:** Always replace `.count() == 0` with `.exists()` for pure existence checks, or with `.first()` when the object is needed immediately to reduce database queries.
