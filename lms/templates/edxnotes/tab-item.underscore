@@ -5,7 +5,7 @@
 </a>
 
 <% if (is_closable) { %>
-  <button type="button" class="action-close">
+  <button type="button" class="action-close" title="<%- gettext('Clear search results') %>" aria-label="<%- gettext('Clear search results') %>">
     <span class="icon fa fa-times-circle" aria-hidden="true"></span>
     <span class="sr"><%- gettext("Clear search results") %></span>
   </button>
