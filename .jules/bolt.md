@@ -1,0 +1,3 @@
+## 2024-11-01 - Replace .count() == 0 with .exists() or .first()
+**Learning:** In Django, using `.count() == 0` for pure existence checks or retrieving the first element is inefficient as it triggers a COUNT query. Additionally, assigning the queryset to a variable that shadows an argument (e.g., `user = Model.objects.filter(user=user)`) reduces readability and can lead to bugs.
+**Action:** Always replace `.count() == 0` with `.exists()` for existence checks, or `.first()` when the object is needed immediately, to reduce DB queries. Rename shadowed variables (e.g., to `course_creator`) when refactoring.
