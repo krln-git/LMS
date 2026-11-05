@@ -1,0 +1,3 @@
+## 2026-11-05 - Optimize Accessibility of Icon-Only Close Buttons
+**Learning:** When working with icon-only close buttons, using an `aria-label` directly on the `<button>` is preferred over using an inner visually hidden `<span class="sr">`. Using both or incorrectly nesting can cause screen readers to announce the label twice and may introduce minor visual regressions.
+**Action:** Add `aria-label` attributes directly to `button` tags and reuse existing localized translation strings (like Mako's `${_('Close')}`), completely replacing the redundant inner `<span class="sr">`. Ensure these changes apply cleanly across modal templates.

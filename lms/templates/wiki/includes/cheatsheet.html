@@ -2,7 +2,9 @@
 {% load django_markup %}
 <div id="cheatsheetModal" class="modal" aria-hidden="true">
   <div class="inner-wrapper" role="dialog" aria-labelledby="cheatsheet-title" aria-modal=true>
-    <button class="close-modal"><span class="icon fa fa-remove" aria-hidden="true"></span> <span class="sr">{% trans 'Close' as tmsg %}{{tmsg|force_escape}}</span></button>
+    <button class="close-modal" aria-label="{% trans 'Close' as tmsg %}{{tmsg|force_escape}}">
+      <span class="icon fa fa-remove" aria-hidden="true"></span>
+    </button>
 
     <header>
       <h2 id="cheatsheet-title">{% trans "Wiki Cheatsheet" as tmsg%}{{tmsg|force_escape}}<span class="sr">, {% trans "window open" as tmsg%}{{tmsg|force_escape}}</span></h2>
