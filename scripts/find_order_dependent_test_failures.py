@@ -21,6 +21,7 @@ import os
 import re
 import shutil
 import tempfile
+import subprocess
 
 import click
 
@@ -94,9 +95,12 @@ def _load_test_file(test_file):
 
 def _get_pytest_command(output_file_name):
     """
-    Return the pytest command to run.
+    Return the pytest command arguments as a list.
     """
-    return f"pytest -p 'no:randomly' `cat {output_file_name}`"
+    # Sentinel: Read file contents in Python instead of using shell substitution
+    with open(output_file_name, 'r', encoding='utf-8') as f:
+        test_files = [line.strip() for line in f if line.strip()]
+    return ["pytest", "-p", "no:randomly"] + test_files
 
 
 def _run_tests_and_check_for_failures(output_file_name):
@@ -105,7 +109,9 @@ def _run_tests_and_check_for_failures(output_file_name):
     """
     global verbose_option
     pytest_command = _get_pytest_command(output_file_name)
-    test_output = os.popen(pytest_command).read()
+    # Sentinel: Use subprocess.run with a list of arguments instead of os.popen to prevent command injection
+    result = subprocess.run(pytest_command, capture_output=True, text=True, check=False)
+    test_output = result.stdout + result.stderr
     if verbose_option:
         print(test_output)
     failures_search = re.search(r'=== (\d+) failed', test_output)
