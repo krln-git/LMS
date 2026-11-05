@@ -1,0 +1,3 @@
+## 2024-05-23 - Django Queryset Shadowing and .count() Overhead
+**Learning:** In Django, using `.count() == 0` and then subsequently fetching the item using array indexing (`user[0]`) causes two database queries (a COUNT query followed by a full select query). Also, shadowing the function argument with the queryset variable name (e.g. `user = CourseCreator.objects.filter(user=user)`) reduces readability and can lead to confusing bugs.
+**Action:** Always replace `.count() == 0` followed by index access with `.first()` to reduce database queries. Rename shadowing variables (e.g., to `course_creator`) to improve readability and avoid shadowing the function argument.
