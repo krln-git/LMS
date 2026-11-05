@@ -200,7 +200,9 @@
   <input type="hidden" name="r" value="" />
   <div id="previewRevisionModal" class="modal" aria-hidden="true">
     <div class="inner-wrapper" role="dialog" aria-labelledby="preview-title" aria-modal=true>
-      <button class="close-modal"><span class="icon fa fa-remove" aria-hidden="true"></span> <span class="sr">{% trans 'Close' as tmsg%}{{tmsg|force_escape}}</span></button>
+      <button class="close-modal" aria-label="{% trans 'Close' as tmsg%}{{tmsg|force_escape}}">
+      <span class="icon fa fa-remove" aria-hidden="true"></span>
+    </button>
 
       <header>
         <h2 id="preview-title">{% trans "Wiki Revision Preview" as tmsg%}{{tmsg|force_escape}}<span class="sr">, {% trans "window open" as tmsg%}{{tmsg|force_escape}}</span></h2>
@@ -231,7 +233,9 @@
 
   <div id="mergeModal" class="modal" aria-hidden="true">
     <div class="inner-wrapper" role="dialog" aria-labelledby="merge-title" aria-modal=true>
-      <button class="close-modal"><span class="icon fa fa-remove" aria-hidden="true"></span> <span class="sr">{% trans 'Close' as tmsg%}{{tmsg|force_escape}}</span></button>
+      <button class="close-modal" aria-label="{% trans 'Close' as tmsg%}{{tmsg|force_escape}}">
+      <span class="icon fa fa-remove" aria-hidden="true"></span>
+    </button>
 
       <header>
         <h2 id="merge-title">{% trans "Merge Revision" as tmsg %}{{tmsg|force_escape}}<span class="sr">, {% trans "window open" as tmsg%}{{tmsg|force_escape}}</span></h2>
